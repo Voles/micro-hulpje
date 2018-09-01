@@ -1,5 +1,5 @@
 import AtleetParser from './AtleetParser';
-import atleetHtml from './html';
+import atleetHtml from './AtleetParserHtml';
 
 describe('Atleet HTML parser', () => {
     let atleetParser;
