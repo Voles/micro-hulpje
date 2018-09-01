@@ -17,6 +17,7 @@
     "request": "2.88.0"
   },
   "devDependencies": {
+    "@types/cheerio": "0.22.9",
     "@types/jest": "23.3.1",
     "jest": "23.5.0",
     "typescript": "3.0.3"
