@@ -1,7 +1,0 @@
-1. Open Terminal
-2. Type de volgende commando's:
-cd ~/Desktop/micro-hulpje
-node index.js
-3. De uitvoer staat in het mapje 'micro-hulpje/output'
-
-De invoer kan je aanpassen in 'index.js'

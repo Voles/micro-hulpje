@@ -1,11 +1,13 @@
 import * as cheerio from 'cheerio';
+import StartlijstModel from '../models/StartlijstModel';
+import DeelnemerModel from "../models/DeelnemerModel";
 
 class StartlijstParser {
-    parse(html: string): Promise<object> {
-        return Promise.resolve({
-            title: this.parseTitel(html),
-            deelnemers: this.parseDeelnemers(html)
-        })
+    parse(html: string): Promise<StartlijstModel> {
+        return Promise.resolve(new StartlijstModel(
+            this.parseTitel(html),
+            this.parseDeelnemers(html)
+        ))
     }
 
     parseTitel(html: string): string {
@@ -13,7 +15,7 @@ class StartlijstParser {
         return $('#primarycontent h1').first().text();
     }
 
-    parseDeelnemers(html: string): object {
+    parseDeelnemers(html: string): Array<DeelnemerModel> {
         const $ = cheerio.load(html);
 
         // tabel
@@ -59,14 +61,15 @@ class StartlijstParser {
 
                 const obp = obpRaw === '---' ? '' : obpRaw;
 
-                theDeelnemers.push({
-                    datum: datum,
-                    id: deelnemerId,
-                    naam: removeDoubleSpaces(naam),
-                    obp: obp,
-                    vereniging: vereniging,
-                    volgorde: i + 1,
-                });
+                theDeelnemers
+                    .push(new DeelnemerModel(
+                        i + 1,
+                        deelnemerId,
+                        removeDoubleSpaces(naam),
+                        vereniging,
+                        obp,
+                        datum
+                    ));
             });
 
         return theDeelnemers

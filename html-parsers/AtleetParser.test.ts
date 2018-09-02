@@ -16,11 +16,11 @@ describe('Atleet HTML parser', () => {
 
     describe('the Persoonlijke records', () => {
         it('should be present', () => {
-            expect(parsedResult).toHaveProperty('records');
+            expect(parsedResult).toHaveProperty('persoonlijkeRecords');
         })
 
         it('should contain all records', () => {
-            expect(parsedResult.records).toEqual({
+            expect(parsedResult.persoonlijkeRecords).toEqual({
                 '100 meter': '14,0',
                 '1000 meter': '4:16,2',
                 '150 meter': '23,34',
