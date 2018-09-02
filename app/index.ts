@@ -2,7 +2,7 @@ import MicroHulpje from "./domain/MicroHulpje"
 import FileWriter from "./writers/FileWriter";
 
 const STARTLIJSTEN = [
-    ''
+    'https://www.atletiek.nu/wedstrijd/startlijst/179392/39/'
 ];
 
 const fileWriter = new FileWriter()

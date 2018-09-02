@@ -70,7 +70,7 @@ class DeelnemersOverviewGenerator {
         } else if (titel.includes('Kogelslingeren 4 kilogram')) {
             return Onderdeel.Kogelslingeren4Kg;
         } else {
-            throw new Error(`Kan geen onderdeel detecteren voor de startlijst met titel '${titel}'`);
+            throw new Error(`Kan geen onderdeel detecteren voor de startlijst met titel '${titel}'. Ondersteuning voor dit onderdeel moet nog worden toegevoegd.`);
         }
     }
 }
