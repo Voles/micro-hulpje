@@ -18,10 +18,14 @@ class DeelnemersOverviewGenerator {
             .then(startlijst => {
                 const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel);
 
+                if (!onderdeel) {
+                    console.info(`Info: OBP via de Atleet-pagina ophalen is niet gelukt. Kan nl. het onderdeel niet detecteren voor de startlijst met titel '${startlijst.titel}'. Wellicht moet heirvoor nog ondersteuning worden toegevoegd.`)
+                }
+
                 const deelnemersWithHydratedObp = startlijst
                     .deelnemers
                     .map(deelnemer => {
-                        return deelnemer.obp === '' ?
+                        return deelnemer.obp === '' && onderdeel ?
                             this.hydrateDeelnemerObpFromPersoonlijkeRecords(onderdeel, deelnemer) :
                             deelnemer;
                     });
@@ -70,7 +74,7 @@ class DeelnemersOverviewGenerator {
         } else if (titel.includes('Kogelslingeren 4 kilogram')) {
             return Onderdeel.Kogelslingeren4Kg;
         } else {
-            throw new Error(`Kan geen onderdeel detecteren voor de startlijst met titel '${titel}'. Ondersteuning voor dit onderdeel moet nog worden toegevoegd.`);
+            return null
         }
     }
 }
