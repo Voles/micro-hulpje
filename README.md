@@ -1,12 +1,12 @@
-Micro Hulpje
+Micro Hulpje [![Build Status](https://travis-ci.org/Voles/micro-hulpje.svg?branch=master)](https://travis-ci.org/Voles/micro-hulpje)
 ============
 
-# Installatie
+## Installatie
 
     $ npm install
     $ npm build
 
-# Uitvoeren
+## Uitvoeren
 
     1. Pas startlijsten aan in `index.ts`
     2. Open Terminal
