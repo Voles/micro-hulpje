@@ -67,6 +67,8 @@ class DeelnemersOverviewGenerator {
             return Onderdeel.Hoogspringen;
         } else if (titel.includes('Kogelstoten 4 kilogram')) {
             return Onderdeel.Kogelstoten4Kg;
+        } else if (titel.includes('Speerwerpen')) {
+            return Onderdeel.Speerwerpen;
         } else if (titel.includes('Speerwerpen 600 gram')) {
             return Onderdeel.Speerwerpen600G;
         } else if (titel.includes('Verspringen')) {
