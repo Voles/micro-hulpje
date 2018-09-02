@@ -51,7 +51,7 @@ class StartlijstParser {
         deelnemers
             .each(function (i, element) {
                 const deelnemerId = $(element).attr('data-deelnemer_id');
-                const naam = $(element).find('td').eq(naamIndex).find('span').first().text();
+                const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
                 const vereniging = $(element).find('td').eq(verenigingIndex).find('a').first().text();
                 const obpRaw = $(element).find('td').eq(obpIndex).find('span').first().find('span.tipped').first().text();
                 const tipped = $(element).find('td').eq(obpIndex).find('.tipped').first().attr('title');
