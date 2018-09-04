@@ -41,7 +41,7 @@ class DeelnemersOverviewGenerator {
                         if (categorie && onderdeel && seizoen) {
                             return this
                                 .ranglijstService
-                                .from(seizoen, onderdeel, categorie)
+                                .from(seizoen, categorie, onderdeel)
                                 .then(ranglijst => {
                                     const ranglijstHydratedDeelnemers = hydratedDeelnemers
                                         .map(deelnemer => {
