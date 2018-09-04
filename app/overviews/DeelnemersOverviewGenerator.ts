@@ -121,6 +121,7 @@ class DeelnemersOverviewGenerator {
         }
     }
 
+    // via https://stackoverflow.com/a/7091965
     private leeftijdVoorGeboortedatum(geboortedatum: Date): number {
         var today = new Date();
         var birthDate = geboortedatum;
