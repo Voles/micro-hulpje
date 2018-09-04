@@ -53,6 +53,7 @@ class DeelnemersOverviewGenerator {
 
                                             if (deelnemerUitRanglijst) {
                                                 deelnemer.rang = deelnemerUitRanglijst.positie
+                                                deelnemer.leeftijd = this.leeftijdVoorGeboortedatum(deelnemerUitRanglijst.geboortedatum)
                                             }
 
                                             return deelnemer
@@ -116,12 +117,23 @@ class DeelnemersOverviewGenerator {
         }
     }
 
-    private detectCategorieFromStartlijstTitel(titel: string) : RanglijstCategorien {
+    private detectCategorieFromStartlijstTitel(titel: string): RanglijstCategorien {
         if (titel.includes('JJD')) {
             return RanglijstCategorien.MannenJuniorenD;
         } else {
             return null
         }
+    }
+
+    private leeftijdVoorGeboortedatum(geboortedatum: Date): number {
+        var today = new Date();
+        var birthDate = geboortedatum;
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     }
 }
 

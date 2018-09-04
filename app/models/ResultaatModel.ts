@@ -2,13 +2,13 @@ class ResultaatModel {
     public positie: number
     public prestatie: string
     public atleet: string
-    public geboortejaar: Date
+    public geboortedatum: Date
 
-    constructor(positie: number, prestatie: string, atleet: string, geboortejaar: Date) {
+    constructor(positie: number, prestatie: string, atleet: string, geboortedatum: Date) {
         this.positie = positie
         this.prestatie = prestatie
         this.atleet = atleet
-        this.geboortejaar = geboortejaar
+        this.geboortedatum = geboortedatum
     }
 }
 
