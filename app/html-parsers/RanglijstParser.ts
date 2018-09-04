@@ -80,7 +80,7 @@ class RanglijstParser {
                         Number(positie),
                         prestatie,
                         removeDoubleSpaces(atleet),
-                        new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                        new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
                     ));
             });
 
