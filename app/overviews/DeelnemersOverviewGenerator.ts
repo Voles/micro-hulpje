@@ -75,6 +75,8 @@ class DeelnemersOverviewGenerator {
             return Onderdeel.Verspringen;
         } else if (titel.includes('Kogelslingeren 4 kilogram')) {
             return Onderdeel.Kogelslingeren4Kg;
+        } else if (titel.includes('80 meter')) {
+            return Onderdeel.Sprint80M;
         } else {
             return null
         }
