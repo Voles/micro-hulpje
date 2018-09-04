@@ -1,26 +1,23 @@
 import UrlContentLoaderAdapter from "../content-loaders/UrlContentLoader";
-import StartlijstParser from "../html-parsers/StartlijstParser";
 import AtleetParser from "../html-parsers/AtleetParser";
 import DeelnemersOverviewModel from "../models/overviews/DeelnemersOverviewModel";
 import Onderdeel from "../constants/Onderdelen";
 import DeelnemerModel from "../models/DeelnemerModel";
 import RanglijstCategorien from "../constants/RanglijstCategorien";
 import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
-import RanglijstContentLoaderAdapter from "../content-loaders/RanglijstContentLoader";
-import RanglijstParser from "../html-parsers/RanglijstParser";
+import StartlijstService from "../services/StartlijstService";
+import RanglijstService from "../services/RanglijstService";
 
 class DeelnemersOverviewGenerator {
+    private startlijstService: StartlijstService = new StartlijstService()
+    private ranglijstService: RanglijstService = new RanglijstService()
     private urlContentLoader: UrlContentLoaderAdapter = new UrlContentLoaderAdapter()
-    private startlijstParser: StartlijstParser = new StartlijstParser()
     private atleetParser: AtleetParser = new AtleetParser()
-    private ranglijstContentLoaderAdapter = new RanglijstContentLoaderAdapter()
-    private ranglijstParser = new RanglijstParser()
 
     generate(startlijstUrl: string): Promise<DeelnemersOverviewModel> {
         return this
-            .urlContentLoader
-            .load(startlijstUrl)
-            .then(html => this.startlijstParser.parse(html))
+            .startlijstService
+            .fromUrl(startlijstUrl)
             .then(startlijst => {
                 const categorie = this.detectCategorieFromStartlijstTitel(startlijst.titel)
                 const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
@@ -43,9 +40,8 @@ class DeelnemersOverviewGenerator {
                     .then(hydratedDeelnemers => {
                         if (categorie && onderdeel && seizoen) {
                             return this
-                                .ranglijstContentLoaderAdapter
-                                .load({ seizoen: seizoen, onderdeel: onderdeel, categorie: categorie })
-                                .then(html => this.ranglijstParser.parse(html))
+                                .ranglijstService
+                                .from(seizoen, onderdeel, categorie)
                                 .then(ranglijst => {
                                     const ranglijstHydratedDeelnemers = hydratedDeelnemers
                                         .map(deelnemer => {
