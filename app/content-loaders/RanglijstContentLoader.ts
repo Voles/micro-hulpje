@@ -51,6 +51,10 @@ class RanglijstContentLoaderAdapter implements IContentLoader {
         switch (onderdeel) {
             case RanglijstOnderdeel.TachtigMeter:
                 return '80m'
+
+            case RanglijstOnderdeel.Speerwerpen400G:
+                return 'Speer'
+
             default:
                 throw new Error(`Nog geen ondersteuning voor onderdeel ${onderdeel}`)
                 return null
@@ -61,6 +65,8 @@ class RanglijstContentLoaderAdapter implements IContentLoader {
         switch (onderdeel) {
             case RanglijstOnderdeel.TachtigMeter:
                 return RanglijstOnderdeelCategorie.SprintEnHorden
+            case RanglijstOnderdeel.Speerwerpen400G:
+                return RanglijstOnderdeelCategorie.WerpEnSpringOnderdelen
             default:
                 throw new Error(`Kan de categorie voor ${onderdeel} niet detecteren.`)
                 return null

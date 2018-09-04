@@ -19,7 +19,7 @@ class DeelnemersOverviewGenerator {
             .startlijstService
             .fromUrl(startlijstUrl)
             .then(startlijst => {
-                const categorie = this.detectCategorieFromStartlijstTitel(startlijst.titel)
+                const ranglijstCategorie = this.detectRanglijstCategorieFromStartlijstTitel(startlijst.titel)
                 const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
                 const seizoen = RanglijstSeizoenen.Outdoor2018
 
@@ -38,10 +38,10 @@ class DeelnemersOverviewGenerator {
                 return Promise
                     .all(deelnemersWithHydratedObp)
                     .then(hydratedDeelnemers => {
-                        if (categorie && onderdeel && seizoen) {
+                        if (ranglijstCategorie && onderdeel && seizoen) {
                             return this
                                 .ranglijstService
-                                .from(seizoen, categorie, onderdeel)
+                                .from(seizoen, ranglijstCategorie, onderdeel)
                                 .then(ranglijst => {
                                     const ranglijstHydratedDeelnemers = hydratedDeelnemers
                                         .map(deelnemer => {
@@ -61,7 +61,7 @@ class DeelnemersOverviewGenerator {
                                     )
                                 })
                         } else {
-                            console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${categorie}, onderdeel: ${onderdeel}, seizoen: ${seizoen}`)
+                            console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${ranglijstCategorie}, onderdeel: ${onderdeel}, seizoen: ${seizoen}`)
 
                             return new DeelnemersOverviewModel(
                                 startlijst.titel,
@@ -98,10 +98,12 @@ class DeelnemersOverviewGenerator {
             return Onderdeel.Hoogspringen;
         } else if (titel.includes('Kogelstoten 4 kilogram')) {
             return Onderdeel.Kogelstoten4Kg;
-        } else if (titel.includes('Speerwerpen')) {
-            return Onderdeel.Speerwerpen;
         } else if (titel.includes('Speerwerpen 600 gram')) {
             return Onderdeel.Speerwerpen600G;
+        } else if (titel.includes('Speerwerpen 400 gram')) {
+            return Onderdeel.Speerwerpen400G;
+        } else if (titel.includes('Speerwerpen')) {
+            return Onderdeel.Speerwerpen;
         } else if (titel.includes('Verspringen')) {
             return Onderdeel.Verspringen;
         } else if (titel.includes('Kogelslingeren 4 kilogram')) {
@@ -113,9 +115,11 @@ class DeelnemersOverviewGenerator {
         }
     }
 
-    private detectCategorieFromStartlijstTitel(titel: string): RanglijstCategorien {
+    private detectRanglijstCategorieFromStartlijstTitel(titel: string): RanglijstCategorien {
         if (titel.includes('JJD')) {
             return RanglijstCategorien.MannenJuniorenD;
+        } else if (titel.includes('MJD')) {
+            return RanglijstCategorien.VrouwenJuniorenD;
         } else {
             return null
         }
