@@ -1,5 +1,5 @@
-interface ContentLoaderInterface {
-    load(input: string): Promise<string>;
+interface IContentLoader {
+    load(input: string | { seizoen: string, categorie: string, onderdeel: string }): Promise<string>
 }
 
-export default ContentLoaderInterface;
+export default IContentLoader;

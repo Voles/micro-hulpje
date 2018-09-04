@@ -1,6 +1,7 @@
 import StartlijstParser from './StartlijstParser';
 import startlijstHtml from './StartlijstParserHtml';
 import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam';
+import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
 import DeelnemerModel from "../models/DeelnemerModel";
 
 describe('Startlijst HTML parser', () => {
@@ -57,6 +58,20 @@ describe('Startlijst HTML parser', () => {
                     '29-04-2016'
                 )
             )
+        })
+    })
+
+    describe('parsing a Startlijst met serie indeling', () => {
+        beforeAll(() =>
+            startlijstParser
+                .parse(startlijstParserHtmlMetSerieIndeling)
+                .then(result => {
+                    parsedResult = result
+                })
+        )
+
+        it('should include the deelnemers from alle series', () => {
+            expect(parsedResult.deelnemers.length).toEqual(30)
         })
     })
 })

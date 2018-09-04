@@ -12,32 +12,49 @@ class DeelnemersOverviewModel implements IOverviewModel {
     }
 
     toCsvFormat(): string {
-        const includeDatumKolom = this.getDeelnemersWaarvanDatumOnbekendIs().length === 0
-        const columns = this.getCsvColumns(includeDatumKolom)
+        const includeDatumKolom = this.getDeelnemersWaarvanDatumBekendIs().length !== 0
+        const includeRangKolom = this.getDeelnemersWaarvanRangBekendIs().length !== 0
+        const columns = this.getCsvColumns(includeDatumKolom, includeRangKolom)
 
         const formatter = new CsvFormatter(columns, this.deelnemers)
         return formatter.format()
     }
 
-    private getCsvColumns(includeDatumKolom: boolean): Array<{ label: string, value: string }> {
-        const columns = [
+    private getCsvColumns(includeDatumKolom: boolean, includeRangKolom: boolean): Array<{ label: string, value: string }> {
+        let columns = [
             { label: '#', value: 'volgorde' },
             { label: 'Naam', value: 'naam' },
             { label: 'Vereniging', value: 'vereniging'},
             { label: 'OBP', value: 'obp'},
             { label: 'Datum', value: 'datum' },
+            { label: 'Rang', value: 'rang' },
             { label: 'Info', value: ''}
         ];
 
-        return includeDatumKolom ?
-            columns :
-            columns.filter(column => column.value !== 'datum')
+        columns = includeDatumKolom ? columns : this.withoutDatumKolom(columns)
+        columns = includeRangKolom ? columns : this.withoutRangKolom(columns)
+
+        return columns
     }
 
-    private getDeelnemersWaarvanDatumOnbekendIs(): Array<DeelnemerModel> {
+    private getDeelnemersWaarvanDatumBekendIs(): Array<DeelnemerModel> {
         return this
             .deelnemers
-            .filter(deelnemer => deelnemer.datum === '')
+            .filter(deelnemer => deelnemer.datum !== '')
+    }
+
+    private getDeelnemersWaarvanRangBekendIs(): Array<DeelnemerModel> {
+        return this
+            .deelnemers
+            .filter(deelnemer => deelnemer.rang !== null)
+    }
+
+    private withoutDatumKolom(columns: Array<{ label: string, value: string }>): Array<{ label: string, value: string }> {
+        return columns.filter(column => column.value !== 'datum')
+    }
+
+    private withoutRangKolom(columns: Array<{ label: string, value: string }>): Array<{ label: string, value: string }> {
+        return columns.filter(column => column.value !== 'rang')
     }
 }
 
