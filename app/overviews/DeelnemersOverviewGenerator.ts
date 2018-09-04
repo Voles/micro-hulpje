@@ -24,7 +24,7 @@ class DeelnemersOverviewGenerator {
                 const seizoen = RanglijstSeizoenen.Outdoor2018
 
                 if (!onderdeel) {
-                    console.info(`Info: OBP via de Atleet-pagina ophalen is niet gelukt. Kan nl. het onderdeel niet detecteren voor de startlijst met titel '${startlijst.titel}'. Wellicht moet hiervoor nog ondersteuning worden toegevoegd.`)
+                    console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
                 }
 
                 const deelnemersWithHydratedObp = startlijst
@@ -58,6 +58,14 @@ class DeelnemersOverviewGenerator {
                                     return new DeelnemersOverviewModel(
                                         startlijst.titel,
                                         ranglijstHydratedDeelnemers
+                                    )
+                                })
+                                .catch(error => {
+                                    console.info(`Info: Ranglijst info ophalen is niet gelukt. ${error}`)
+
+                                    return new DeelnemersOverviewModel(
+                                        startlijst.titel,
+                                        hydratedDeelnemers
                                     )
                                 })
                         } else {
@@ -94,32 +102,57 @@ class DeelnemersOverviewGenerator {
     }
 
     private detectOnderdeelFromStartlijstTitel(titel: string) : Onderdeel {
-        if (titel.includes('Hoogspringen')) {
-            return Onderdeel.Hoogspringen;
-        } else if (titel.includes('Kogelstoten 4 kilogram')) {
-            return Onderdeel.Kogelstoten4Kg;
-        } else if (titel.includes('Speerwerpen 600 gram')) {
-            return Onderdeel.Speerwerpen600G;
-        } else if (titel.includes('Speerwerpen 400 gram')) {
-            return Onderdeel.Speerwerpen400G;
-        } else if (titel.includes('Speerwerpen')) {
-            return Onderdeel.Speerwerpen;
-        } else if (titel.includes('Verspringen')) {
-            return Onderdeel.Verspringen;
-        } else if (titel.includes('Kogelslingeren 4 kilogram')) {
-            return Onderdeel.Kogelslingeren4Kg;
-        } else if (titel.includes('80 meter')) {
-            return Onderdeel.Sprint80M;
-        } else {
-            return null
-        }
+        const onderdelen = [
+            Onderdeel.Hoogspringen,
+            Onderdeel.Verspringen,
+
+            Onderdeel.Kogelstoten2Kg,
+            Onderdeel.Kogelstoten4Kg,
+            Onderdeel.Kogelstoten3Kg,
+            Onderdeel.Kogelstoten,
+
+            Onderdeel.Speerwerpen400G,
+            Onderdeel.Speerwerpen600G,
+            Onderdeel.Speerwerpen,
+
+            Onderdeel.Kogelslingeren4Kg,
+
+            Onderdeel.Lopen60M,
+            Onderdeel.Lopen80M,
+            Onderdeel.Lopen150M,
+            Onderdeel.Lopen800M,
+            Onderdeel.Lopen1000M,
+
+            Onderdeel.Discuswerpen1Kg,
+
+            Onderdeel.Horden60MHoogte76Cm,
+            Onderdeel.Horden100MHoogte84Cm
+        ]
+
+        return onderdelen.find(onderdeel => titel.includes(onderdeel))
     }
 
     private detectRanglijstCategorieFromStartlijstTitel(titel: string): RanglijstCategorien {
-        if (titel.includes('JJD')) {
-            return RanglijstCategorien.MannenJuniorenD;
+        if (titel.includes('JJA')) {
+            return RanglijstCategorien.MannenJuniorenA
+        } else if (titel.includes('JJB')) {
+            return RanglijstCategorien.MannenJuniorenB
+        } else if (titel.includes('JJC')) {
+            return RanglijstCategorien.MannenJuniorenC
+        } else if (titel.includes('JJD')) {
+            return RanglijstCategorien.MannenJuniorenD
+        } else if (titel.includes('Msen')) {
+            return RanglijstCategorien.MannenSenioren
+        } else if (titel.includes('MJA')) {
+            return RanglijstCategorien.VrouwenJuniorenA
+        } else if (titel.includes('MJB')) {
+            return RanglijstCategorien.VrouwenJuniorenB
+        } else if (titel.includes('MJC')) {
+            return RanglijstCategorien.VrouwenJuniorenC
         } else if (titel.includes('MJD')) {
-            return RanglijstCategorien.VrouwenJuniorenD;
+            return RanglijstCategorien.VrouwenJuniorenD
+        } else if (titel.includes('Vsen')) {
+            return RanglijstCategorien.VrouwenSenioren
         } else {
             return null
         }

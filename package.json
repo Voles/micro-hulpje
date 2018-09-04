@@ -5,22 +5,29 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "DEBUG=mh:* node dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cheerio": "1.0.0-rc.2",
     "csv-writer": "1.2.0",
+    "debug": "3.1.0",
+    "filenamify": "2.1.0",
     "json2csv": "4.2.1",
     "lodash": "4.17.10",
+    "mkdirp-promise": "5.0.1",
+    "p-queue": "3.0.0",
     "puppeteer": "1.7.0",
     "request": "2.88.0"
   },
   "devDependencies": {
     "@types/cheerio": "0.22.9",
+    "@types/filenamify": "2.0.1",
     "@types/jest": "23.3.1",
     "@types/json2csv": "4.2.0",
+    "@types/mkdirp": "0.5.2",
+    "@types/p-queue": "2.3.1",
     "@types/request": "2.47.1",
     "jest": "23.5.0",
     "typescript": "3.0.3"

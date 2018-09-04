@@ -1,13 +1,13 @@
 enum RanglijstCategorien {
-    MannenJuniorenD = 'junioren-d-jongens',
-    MannenJuniorenC = 'junioren-c-jongens',
-    MannenJuniorenB = 'junioren-b-jongens',
     MannenJuniorenA = 'junioren-a-jongens',
+    MannenJuniorenB = 'junioren-b-jongens',
+    MannenJuniorenC = 'junioren-c-jongens',
+    MannenJuniorenD = 'junioren-d-jongens',
     MannenSenioren = 'senioren-mannen',
-    VrouwenJuniorenD = 'junioren-d-meisjes',
-    VrouwenJuniorenC = 'junioren-c-meisjes',
-    VrouwenJuniorenB = 'junioren-b-meisjes',
     VrouwenJuniorenA = 'junioren-a-meisjes',
+    VrouwenJuniorenB = 'junioren-b-meisjes',
+    VrouwenJuniorenC = 'junioren-c-meisjes',
+    VrouwenJuniorenD = 'junioren-d-meisjes',
     VrouwenSenioren = 'senioren-vrouwen'
 }
 
