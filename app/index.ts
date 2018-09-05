@@ -16,16 +16,21 @@ const debug = debugLogs('mh:index')
 
 const queue = new PQueue({concurrency: 1})
 
-const tijdsschema = ''
+
+/**
+ * Code om alle startlijsten voor een wedstrijd te genereren
+ */
+const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24713/'
 
 wedstrijdTijdsschemasService
-    .fromUrl(tijdsschema)
+    .fromUrl(linkTijdsschema)
     .then(tijdsschema => {
         const wedstrijdFolderName = filenamify(tijdsschema.titel, { replacement: '-' });
 
         return mkdirpPromise(`./output/${wedstrijdFolderName}`)
             .then(() => {
                 debug(`Map '${wedstrijdFolderName}' aangemaakt voor overzichten`)
+
                 const deelnemersOverviews = tijdsschema
                     .startlijstLinks
                     .map(link => () => {
@@ -51,3 +56,23 @@ wedstrijdTijdsschemasService
                     })
             })
     })
+
+//
+// /**
+//  * Code om een enkele startlijst te genereren
+//  */
+//
+// const linkStartlijst = 'https://www.atletiek.nu/wedstrijd/startlijst/208353/41/'
+//
+// mkdirpPromise(`./output/enkele-startlijsten`)
+// microHulpje
+//     .deelnemersOverviewVoorStartlijst(linkStartlijst)
+//     .then(overview => microHulpje.writeAsCsv(overview, `./output/enkele-startlijsten/${overview.titel}.csv`))
+//     .then(() => {
+//         debug('Aanmaken overzicht voltooid 🙌')
+//         process.exit()
+//     })
+//     .catch(error => {
+//         console.error(error);
+//         process.exit(1)
+//     })
