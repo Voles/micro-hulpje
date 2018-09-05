@@ -41,7 +41,8 @@ class RanglijstContentLoaderAdapter implements IContentLoader {
                 await page.waitForSelector(`.onderdelenSubPickerContainer a[href="${baseUrl}/${seizoen}/${categorie}/${onderdeelSlug}/"]`);
                 await page.click(`.onderdelenSubPickerContainer a[href="${baseUrl}/${seizoen}/${categorie}/${onderdeelSlug}/"]`);
 
-                await page.waitForSelector('#ranglijstDeelnemers');
+                await page.waitForSelector('table#ranglijstDeelnemers');
+                await page.waitFor(1000)
 
                 const html = await page.evaluate('new XMLSerializer().serializeToString(document.doctype) + document.documentElement.outerHTML');
                 resolve(html)
