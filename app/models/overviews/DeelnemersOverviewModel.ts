@@ -25,11 +25,11 @@ class DeelnemersOverviewModel implements IOverviewModel {
         let columns = [
             { label: '#', value: 'volgorde' },
             { label: 'Naam', value: 'naam' },
-            { label: 'Leeftijd', value: 'leeftijd' },
             { label: 'Vereniging', value: 'vereniging'},
             { label: 'OBP', value: 'obp'},
             { label: 'Datum', value: 'datum' },
             { label: 'Rang', value: 'rang' },
+            { label: 'Leeftijd', value: 'leeftijd' },
             { label: 'Info', value: ''}
         ];
 
