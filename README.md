@@ -3,6 +3,7 @@ Micro Hulpje [![Build Status](https://travis-ci.org/Voles/micro-hulpje.svg?branc
 
 ## Installatie
 
+    $ git clone git@github.com:Voles/micro-hulpje.git
     $ npm install
     $ npm build
 
