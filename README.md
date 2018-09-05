@@ -4,7 +4,8 @@ Micro Hulpje [![Build Status](https://travis-ci.org/Voles/micro-hulpje.svg?branc
 ## Installatie
 
 1. Open het programma Terminal
-2. Voer onderstaande commando's één voor één uit (met enter voer je een commando uit)
+1. Ga naar de gewenste map voor de installatie (gebruik hiervoor het `cd` commando)
+1. Voer onderstaande commando's één voor één uit (met enter voer je een commando uit)
 
 ```bash
 $ git clone git@github.com:Voles/micro-hulpje.git
