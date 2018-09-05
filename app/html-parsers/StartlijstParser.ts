@@ -26,6 +26,7 @@ class StartlijstParser {
         const deelnemers = tabel.find('tbody tr:not(.serieBreak):not([data-deelnemer_id="removed"])');
 
         let obpIndex;
+        let volgordeIndex;
         let naamIndex;
         let verenigingIndex;
 
@@ -33,6 +34,10 @@ class StartlijstParser {
 
         headers.each(function (i, element) {
             const content = $(element).text().trim();
+
+            if (content === 'Baan' || content === 'Startvolgorde') {
+                volgordeIndex = i;
+            }
 
             if (content === 'OBP') {
                 obpIndex = i;
@@ -51,6 +56,7 @@ class StartlijstParser {
 
         deelnemers
             .each(function (i, element) {
+                const volgorde = $(element).find('td').eq(volgordeIndex).text();
                 const deelnemerId = $(element).attr('data-deelnemer_id');
                 const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
                 const vereniging = $(element).find('td').eq(verenigingIndex).find('a').first().text();
@@ -64,7 +70,7 @@ class StartlijstParser {
 
                 theDeelnemers
                     .push(new DeelnemerModel(
-                        i + 1,
+                        Number(volgorde),
                         deelnemerId,
                         removeDoubleSpaces(naam),
                         vereniging,

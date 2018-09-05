@@ -30,9 +30,9 @@ describe('Startlijst HTML parser', () => {
         describe('the Startlijst deelnemers', () => {
             it('should include all deelnemers', () => {
                 expect(parsedResult.deelnemers).toEqual([
-                    new DeelnemerModel(1, '661313', 'Jared Broers', 'AV Hera', '14,10', '10-05-2018'),
-                    new DeelnemerModel(2, '663660', 'Jeff Tesselaar', 'AV Hera', '14,80', '08-06-2018'),
-                    new DeelnemerModel(3, '670693', 'Enrique van Velzen', 'PAC', '', '')
+                    new DeelnemerModel(4, '661313', 'Jared Broers', 'AV Hera', '14,10', '10-05-2018'),
+                    new DeelnemerModel(5, '663660', 'Jeff Tesselaar', 'AV Hera', '14,80', '08-06-2018'),
+                    new DeelnemerModel(6, '670693', 'Enrique van Velzen', 'PAC', '', '')
                 ]);
             })
         })
@@ -50,7 +50,7 @@ describe('Startlijst HTML parser', () => {
         it('should include the full name of the deelnemer', () => {
             expect(parsedResult.deelnemers[6]).toEqual(
                 new DeelnemerModel(
-                    7,
+                    6,
                     '436434',
                     'Anja Klunder-Schonberger',
                     'Nijmegen Atletiek',
