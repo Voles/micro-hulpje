@@ -7,8 +7,9 @@ class DeelnemerModel {
     public datum: string
     public rang: number
     public leeftijd: number
+    public serie: number
 
-    constructor(volgorde: number, id: string, naam: string, vereniging: string, obp: string, datum: string, rang: number = null, leeftijd = null) {
+    constructor(volgorde: number, id: string, naam: string, vereniging: string, obp: string, datum: string, rang: number = null, leeftijd: number= null, serie: number = null) {
         this.volgorde = volgorde
         this.id = id
         this.naam = naam
@@ -17,6 +18,7 @@ class DeelnemerModel {
         this.datum = datum
         this.rang = rang
         this.leeftijd = leeftijd
+        this.serie = serie
     }
 }
 

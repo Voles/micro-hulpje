@@ -23,7 +23,10 @@ class StartlijstParser {
         const tabel = $('.deelnemerstabel').first();
 
         // deelnemers
-        const deelnemers = tabel.find('tbody tr:not(.serieBreak):not([data-deelnemer_id="removed"])');
+        const deelnemers = tabel.find('tbody tr:not([data-deelnemer_id="removed"])');
+
+        // serie indeling
+        const isSerieIndelingAanwezig = $(tabel).find('.serieBreak').length > 0
 
         let obpIndex;
         let volgordeIndex;
@@ -53,9 +56,15 @@ class StartlijstParser {
         });
 
         const theDeelnemers = [];
+        let serie = isSerieIndelingAanwezig ? 0 : 1
 
         deelnemers
             .each(function (i, element) {
+                if ($(element).hasClass('serieBreak')) {
+                    serie = serie + 1
+                    return
+                }
+
                 const volgorde = $(element).find('td').eq(volgordeIndex).text();
                 const deelnemerId = $(element).attr('data-deelnemer_id');
                 const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
@@ -75,7 +84,10 @@ class StartlijstParser {
                         removeDoubleSpaces(naam),
                         vereniging,
                         obp,
-                        datum
+                        datum,
+                        null,
+                        null,
+                        serie
                     ));
             });
 
