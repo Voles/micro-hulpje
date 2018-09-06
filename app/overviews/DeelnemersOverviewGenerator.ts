@@ -88,16 +88,13 @@ class DeelnemersOverviewGenerator {
             .load(atleetUrl)
             .then(html => this.atleetParser.parse(html))
             .then(atleet => {
-                return new DeelnemerModel(
-                    deelnemer.volgorde,
-                    deelnemer.id,
-                    deelnemer.naam,
-                    deelnemer.vereniging,
-                    atleet.persoonlijkeRecords[onderdeel] ?
-                        atleet.persoonlijkeRecords[onderdeel] :
-                        deelnemer.obp,
-                    deelnemer.datum
-                );
+                const persoonlijkRecord = atleet.persoonlijkeRecords[onderdeel]
+
+                if (persoonlijkRecord) {
+                    deelnemer.obp = persoonlijkRecord
+                }
+
+                return deelnemer
             })
     }
 
