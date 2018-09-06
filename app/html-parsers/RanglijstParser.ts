@@ -72,19 +72,31 @@ class RanglijstParser {
                 const positie = $(element).find('td').eq(positieIndex).text();
                 const prestatie = $(element).find('td').eq(prestatieIndex).find('a').text();
                 const atleet = $(element).find('td').eq(atleetIndex).find('b').first().text();
-                const geboorteDatum = $(element).find('td').eq(geboortedatumIndex).find('span.sortData').first().attr('data');
-                const date = new Date(Number(`${geboorteDatum}000`))
+                const geboortedatumRaw = $(element).find('td').eq(geboortedatumIndex).find('span.sortData').first().attr('data');
 
                 theResultaten
                     .push(new ResultaatModel(
                         Number(positie),
                         prestatie,
                         removeDoubleSpaces(atleet),
-                        new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
+                        RanglijstParser.parseRawGeboortedatum(geboortedatumRaw)
                     ));
             });
 
         return theResultaten
+    }
+
+    private static parseRawGeboortedatum(geboortedatumRaw: string): Date {
+        const geboortedatum = new Date(Number(`${geboortedatumRaw}000`))
+
+        return new Date(
+            geboortedatum.getFullYear(),
+            geboortedatum.getMonth(),
+            geboortedatum.getDate(),
+            0,
+            0,
+            0
+        )
     }
 }
 
