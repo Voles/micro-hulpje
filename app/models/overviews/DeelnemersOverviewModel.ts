@@ -17,6 +17,13 @@ class DeelnemersOverviewModel implements IOverviewModel {
         const includeLeeftijdKolom = this.getDeelnemersWaarvanLeeftijdBekendIs().length !== 0
         const columns = this.getCsvColumns(includeDatumKolom, includeRangKolom, includeLeeftijdKolom)
 
+        this
+            .deelnemers
+            .filter(deelnemer => deelnemer.besteInSerie)
+            .forEach(deelnemer => {
+                deelnemer.naam =  `${deelnemer.naam} 🏆`
+            })
+
         const formatter = new CsvFormatter(columns, this.deelnemers)
         return formatter.format()
     }

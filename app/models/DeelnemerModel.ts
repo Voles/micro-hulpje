@@ -9,6 +9,7 @@ class DeelnemerModel {
     public datum: string
     public rang: number
     public leeftijd: number
+    public besteInSerie: boolean = false
 
     constructor(serie: number, volgorde: number, id: string, naam: string, vereniging: string, obp: string, obpSortable: number, datum: string) {
         this.serie = serie

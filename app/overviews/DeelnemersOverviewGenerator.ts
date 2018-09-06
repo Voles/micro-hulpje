@@ -1,7 +1,7 @@
 import UrlContentLoaderAdapter from "../content-loaders/UrlContentLoader";
 import AtleetParser from "../html-parsers/AtleetParser";
 import DeelnemersOverviewModel from "../models/overviews/DeelnemersOverviewModel";
-import Onderdeel from "../constants/Onderdelen";
+import Onderdeel, {hoogsteGetalWint} from "../constants/Onderdelen";
 import DeelnemerModel from "../models/DeelnemerModel";
 import RanglijstCategorien from "../constants/RanglijstCategorien";
 import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
@@ -47,6 +47,18 @@ class DeelnemersOverviewGenerator {
                 return this
                     .hydrateDeelnemersWithRanglijstInfo(ranglijstCategorie, onderdeel, seizoen, startlijst.deelnemers)
                     .then(() => startlijst)
+            })
+            .then(startlijst => {
+                const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
+
+                if (!onderdeel) {
+                    console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
+                    return startlijst
+                }
+
+                this.hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(onderdeel, startlijst.deelnemers)
+
+                return startlijst
             })
             .then(startlijst =>
                 new DeelnemersOverviewModel(
@@ -108,6 +120,30 @@ class DeelnemersOverviewGenerator {
             })
     }
 
+    private hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Array<DeelnemerModel> {
+        const theHash = {}
+
+        deelnemers.forEach(deelnemer => {
+            theHash[deelnemer.serie] = theHash[deelnemer.serie] || []
+            theHash[deelnemer.serie].push(deelnemer)
+        })
+
+        Object
+            .keys(theHash)
+            .forEach(key => {
+                const deelnemersForSerie = theHash[key]
+
+                deelnemersForSerie.sort((deelnemerA, deelnemerB) => deelnemerA.obpSortable - deelnemerB.obpSortable)
+
+                const sortedDeelnemers = hoogsteGetalWint.indexOf(onderdeel) > -1 ?
+                    deelnemersForSerie.reverse() : deelnemersForSerie
+
+                sortedDeelnemers[0].besteInSerie = true
+            })
+
+        return deelnemers
+    }
+
     private detectOnderdeelFromStartlijstTitel(titel: string) : Onderdeel {
         const onderdelen = [
             Onderdeel.Hoogspringen,
@@ -133,7 +169,8 @@ class DeelnemersOverviewGenerator {
             Onderdeel.Discuswerpen1Kg,
 
             Onderdeel.Horden60MHoogte76Cm,
-            Onderdeel.Horden100MHoogte84Cm
+            Onderdeel.Horden100MHoogte84Cm,
+            Onderdeel.Horden100M
         ]
 
         return onderdelen.find(onderdeel => titel.includes(onderdeel))
