@@ -2,6 +2,8 @@ import StartlijstParser from './StartlijstParser';
 import startlijstHtml from './StartlijstParserHtml';
 import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam';
 import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
+import startlijstParserHtmlMetTeams from './StartlijstParserHtmlMetTeams';
+
 describe('Startlijst HTML parser', () => {
     let startlijstParser;
     let parsedResult;
@@ -28,9 +30,9 @@ describe('Startlijst HTML parser', () => {
         describe('the Startlijst deelnemers', () => {
             it('should include all deelnemers', () => {
                 expect(parsedResult.deelnemers).toEqual([
-                    new DeelnemerModel(1, 4, '661313', 'Jared Broers', 'AV Hera', '14,10', 14.1, '10-05-2018'),
-                    new DeelnemerModel(1, 5, '663660', 'Jeff Tesselaar', 'AV Hera', '14,80', 14.8, '08-06-2018'),
-                    new DeelnemerModel(1, 6, '670693', 'Enrique van Velzen', 'PAC', '', 0, '')
+                    new DeelnemerModel(1, 4, '661313', 'Jared Broers', 'AV Hera', '', '14,10', 14.1, '10-05-2018'),
+                    new DeelnemerModel(1, 5, '663660', 'Jeff Tesselaar', 'AV Hera', '', '14,80', 14.8, '08-06-2018'),
+                    new DeelnemerModel(1, 6, '670693', 'Enrique van Velzen', 'PAC', '', '', 0, '')
                 ]);
             })
         })
@@ -53,6 +55,7 @@ describe('Startlijst HTML parser', () => {
                     '436434',
                     'Anja Klunder-Schonberger',
                     'Nijmegen Atletiek',
+                    '',
                     '25,81',
                     25.81,
                     '29-04-2016'
@@ -72,6 +75,22 @@ describe('Startlijst HTML parser', () => {
 
         it('should include the deelnemers from alle series', () => {
             expect(parsedResult.deelnemers.length).toEqual(30)
+        })
+    })
+
+    describe('parsing a Startlijst met teams', () => {
+        beforeAll(() =>
+            startlijstParser
+                .parse(startlijstParserHtmlMetTeams)
+                .then(result => {
+                    parsedResult = result
+                })
+        )
+
+        it('should include the teamnaam voor alle deelnemers', () => {
+            expect(parsedResult.deelnemers.map(deelnemer => deelnemer.teamnaam)).toEqual([
+                'Hellas Utrecht JD Team 1', 'Hellas Utrecht JD Team 1', 'AV Sparta JD Team 1', 'GAC Hilversum JD Team 1', 'AV Sprint JD Team 1', 'Hellas Utrecht JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'Altis JD Team 1', 'Altis JD Team 1', 'Haag Atletiek JD Team 1', 'Haag Atletiek JD Team 1', 'AV De Spartaan JD Team 1', 'ARV Ilion JD', 'GAC Hilversum JD Team 1', 'Altis JD Team 1', 'GAC Hilversum JD Team 1', 'Prins Hendrik JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'AV Sparta JD Team 1', 'AV Sparta JD Team 1', 'Prins Hendrik JD Team 1', 'Prins Hendrik JD Team 1', 'AV Sprint JD Team 1', 'Groningen Atletiek JD Team 1', 'ARV Ilion JD', 'ARV Ilion JD', 'Haag Atletiek JD Team 1', 'AV Sprint JD Team 1'
+            ])
         })
     })
 })

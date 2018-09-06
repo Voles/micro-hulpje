@@ -4,6 +4,7 @@ class DeelnemerModel {
     public id: string
     public naam: string
     public vereniging: string
+    public teamnaam: string
     public obp: string
     public obpSortable: number
     public datum: string
@@ -11,12 +12,13 @@ class DeelnemerModel {
     public leeftijd: number
     public besteInSerie: boolean = false
 
-    constructor(serie: number, volgorde: number, id: string, naam: string, vereniging: string, obp: string, obpSortable: number, datum: string) {
+    constructor(serie: number, volgorde: number, id: string, naam: string, vereniging: string, teamnaam: string, obp: string, obpSortable: number, datum: string) {
         this.serie = serie
         this.volgorde = volgorde
         this.id = id
         this.naam = naam
         this.vereniging = vereniging
+        this.teamnaam = teamnaam
         this.obp = obp
         this.obpSortable = obpSortable
         this.datum = datum

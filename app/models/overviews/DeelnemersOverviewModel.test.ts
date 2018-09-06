@@ -7,7 +7,7 @@ describe('Deelnemers Overview Model', () => {
             let model;
 
             beforeAll(() => {
-                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', '10', 10, '22-05-2018')]
+                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', '', '10', 10, '22-05-2018')]
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
@@ -23,7 +23,7 @@ describe('Deelnemers Overview Model', () => {
             let model;
 
             beforeAll(() => {
-                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', '10', 10, '')]
+                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', '', '10', 10, '')]
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
@@ -31,6 +31,22 @@ describe('Deelnemers Overview Model', () => {
                 expect(model.toCsvFormat()).toEqual(
                     `"#","Naam","Vereniging","OBP","Info"
 1,"Niels Dequeker","AV Haarlem","10",`
+                )
+            })
+        })
+
+        describe('when a teamnaam is present', () => {
+            let model;
+
+            beforeAll(() => {
+                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', 'Haarlemse Hardloopgoden', '10', 10, '')]
+                model = new DeelnemersOverviewModel('', deelnemers)
+            })
+
+            it('should leave out the Datum column', () => {
+                expect(model.toCsvFormat()).toEqual(
+                    `"#","Naam","Vereniging","Team","OBP","Info"
+1,"Niels Dequeker","AV Haarlem","Haarlemse Hardloopgoden","10",`
                 )
             })
         })

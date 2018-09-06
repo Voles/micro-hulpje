@@ -15,7 +15,8 @@ class DeelnemersOverviewModel implements IOverviewModel {
         const includeDatumKolom = this.getDeelnemersWaarvanDatumBekendIs().length !== 0
         const includeRangKolom = this.getDeelnemersWaarvanRangBekendIs().length !== 0
         const includeLeeftijdKolom = this.getDeelnemersWaarvanLeeftijdBekendIs().length !== 0
-        const columns = this.getCsvColumns(includeDatumKolom, includeRangKolom, includeLeeftijdKolom)
+        const includeTeamKolom = this.getDeelnemersWaarvanTeamBekendIs().length !== 0
+        const columns = this.getCsvColumns(includeDatumKolom, includeRangKolom, includeLeeftijdKolom, includeTeamKolom)
 
         this
             .deelnemers
@@ -28,11 +29,12 @@ class DeelnemersOverviewModel implements IOverviewModel {
         return formatter.format()
     }
 
-    private getCsvColumns(includeDatumKolom: boolean, includeRangKolom: boolean, includeLeeftijdKolom: boolean): Array<{ label: string, value: string }> {
+    private getCsvColumns(includeDatumKolom: boolean, includeRangKolom: boolean, includeLeeftijdKolom: boolean, includeTeamKolom: boolean): Array<{ label: string, value: string }> {
         let columns = [
             { label: '#', value: 'volgorde' },
             { label: 'Naam', value: 'naam' },
             { label: 'Vereniging', value: 'vereniging'},
+            { label: 'Team', value: 'teamnaam'},
             { label: 'OBP', value: 'obp'},
             { label: 'Datum', value: 'datum' },
             { label: 'Rang', value: 'rang' },
@@ -43,6 +45,7 @@ class DeelnemersOverviewModel implements IOverviewModel {
         columns = includeDatumKolom ? columns : this.withoutDatumKolom(columns)
         columns = includeRangKolom ? columns : this.withoutRangKolom(columns)
         columns = includeLeeftijdKolom ? columns : this.withoutLeeftijdKolom(columns)
+        columns = includeTeamKolom ? columns : this.withoutTeamKolom(columns)
 
         return columns
     }
@@ -65,6 +68,12 @@ class DeelnemersOverviewModel implements IOverviewModel {
             .filter(deelnemer => deelnemer.leeftijd !== undefined)
     }
 
+    private getDeelnemersWaarvanTeamBekendIs(): Array<DeelnemerModel> {
+        return this
+            .deelnemers
+            .filter(deelnemer => deelnemer.teamnaam !== '')
+    }
+
     private withoutDatumKolom(columns: Array<{ label: string, value: string }>): Array<{ label: string, value: string }> {
         return columns.filter(column => column.value !== 'datum')
     }
@@ -75,6 +84,10 @@ class DeelnemersOverviewModel implements IOverviewModel {
 
     private withoutLeeftijdKolom(columns: Array<{ label: string, value: string }>): Array<{ label: string, value: string }> {
         return columns.filter(column => column.value !== 'leeftijd')
+    }
+
+    private withoutTeamKolom(columns: Array<{ label: string, value: string }>): Array<{ label: string, value: string }> {
+        return columns.filter(column => column.value !== 'teamnaam')
     }
 }
 

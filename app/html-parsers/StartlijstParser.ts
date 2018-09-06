@@ -32,6 +32,7 @@ class StartlijstParser {
         let volgordeIndex;
         let naamIndex;
         let verenigingIndex;
+        let teamIndex;
 
         const headers = tabel.find('thead th, thead td');
 
@@ -53,6 +54,10 @@ class StartlijstParser {
             if (content === 'Vereniging') {
                 verenigingIndex = i;
             }
+
+            if (content === 'Team') {
+                teamIndex = i;
+            }
         });
 
         const theDeelnemers = [];
@@ -69,6 +74,7 @@ class StartlijstParser {
                 const deelnemerId = $(element).attr('data-deelnemer_id');
                 const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
                 const vereniging = $(element).find('td').eq(verenigingIndex).find('a').first().text();
+                const team = $(element).find('td').eq(teamIndex).find('a').first().text();
                 const obpRaw = $(element).find('td').eq(obpIndex).find('span').first().find('span.tipped').first().text();
                 const tipped = $(element).find('td').eq(obpIndex).find('.tipped').first().attr('title');
                 const datumRegex = /(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}/;
@@ -84,6 +90,7 @@ class StartlijstParser {
                         deelnemerId,
                         removeDoubleSpaces(naam),
                         vereniging,
+                        team,
                         obp,
                         obpRawToSortable(obp),
                         datum
