@@ -30,9 +30,9 @@ describe('Startlijst HTML parser', () => {
         describe('the Startlijst deelnemers', () => {
             it('should include all deelnemers', () => {
                 expect(parsedResult.deelnemers).toEqual([
-                    new DeelnemerModel(1, 4, '661313', 'Jared Broers', 'AV Hera', '14,10', '10-05-2018'),
-                    new DeelnemerModel(1, 5, '663660', 'Jeff Tesselaar', 'AV Hera', '14,80', '08-06-2018'),
-                    new DeelnemerModel(1, 6, '670693', 'Enrique van Velzen', 'PAC', '', '')
+                    new DeelnemerModel(1, 4, '661313', 'Jared Broers', 'AV Hera', '14,10', 14.1, '10-05-2018'),
+                    new DeelnemerModel(1, 5, '663660', 'Jeff Tesselaar', 'AV Hera', '14,80', 14.8, '08-06-2018'),
+                    new DeelnemerModel(1, 6, '670693', 'Enrique van Velzen', 'PAC', '', 0, '')
                 ]);
             })
         })
@@ -56,6 +56,7 @@ describe('Startlijst HTML parser', () => {
                     'Anja Klunder-Schonberger',
                     'Nijmegen Atletiek',
                     '25,81',
+                    25.81,
                     '29-04-2016'
                 )
             )
@@ -73,6 +74,16 @@ describe('Startlijst HTML parser', () => {
 
         it('should include the deelnemers from alle series', () => {
             expect(parsedResult.deelnemers.length).toEqual(30)
+        })
+    })
+
+    describe('converting raw OBP to sortable', () => {
+        it('should convert a distance', () => {
+            expect(StartlijstParser.parseAfstandRawToNumber('8,20')).toEqual(8.2)
+        })
+
+        it('should convert a duration', () => {
+            expect(StartlijstParser.parseTijdRawToNumber('01:10,15')).toEqual(70.15)
         })
     })
 })
