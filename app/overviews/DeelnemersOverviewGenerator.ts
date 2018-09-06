@@ -19,65 +19,74 @@ class DeelnemersOverviewGenerator {
             .startlijstService
             .fromUrl(startlijstUrl)
             .then(startlijst => {
+                const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
+                if (!onderdeel) {
+                    console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
+                    return startlijst
+                }
+
+                return this
+                    .hydrateDeelnemersObpFromPersoonlijkeRecords(onderdeel, startlijst.deelnemers)
+                    .then(() => startlijst)
+            })
+            .then(startlijst => {
                 const ranglijstCategorie = this.detectRanglijstCategorieFromStartlijstTitel(startlijst.titel)
                 const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
                 const seizoen = RanglijstSeizoenen.Outdoor2018
 
-                if (!onderdeel) {
-                    console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
+                if (!ranglijstCategorie || !onderdeel || !seizoen) {
+                    console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${ranglijstCategorie}, onderdeel: ${onderdeel}, seizoen: ${seizoen}`)
+
+                    return new DeelnemersOverviewModel(
+                        startlijst.titel,
+                        startlijst.deelnemers
+                    )
                 }
 
-                const deelnemersWithHydratedObp = startlijst
-                    .deelnemers
-                    .map(deelnemer => {
-                        return deelnemer.obp === '' && onderdeel ?
-                            this.hydrateDeelnemerObpFromPersoonlijkeRecords(onderdeel, deelnemer) :
-                            deelnemer;
-                    });
-
-                return Promise
-                    .all(deelnemersWithHydratedObp)
-                    .then(hydratedDeelnemers => {
-                        if (ranglijstCategorie && onderdeel && seizoen) {
-                            return this
-                                .ranglijstService
-                                .from(seizoen, ranglijstCategorie, onderdeel)
-                                .then(ranglijst => {
-                                    const ranglijstHydratedDeelnemers = hydratedDeelnemers
-                                        .map(deelnemer => {
-                                            const deelnemerUitRanglijst = ranglijst.resultaten.find(resultaat => resultaat.atleet === deelnemer.naam)
-
-                                            if (deelnemerUitRanglijst) {
-                                                deelnemer.rang = deelnemerUitRanglijst.positie
-                                                deelnemer.leeftijd = this.leeftijdVoorGeboortedatum(deelnemerUitRanglijst.geboortedatum)
-                                            }
-
-                                            return deelnemer
-                                        })
-
-                                    return new DeelnemersOverviewModel(
-                                        startlijst.titel,
-                                        ranglijstHydratedDeelnemers
-                                    )
-                                })
-                                .catch(error => {
-                                    console.info(`Info: Ranglijst info ophalen is niet gelukt. ${error}`)
-
-                                    return new DeelnemersOverviewModel(
-                                        startlijst.titel,
-                                        hydratedDeelnemers
-                                    )
-                                })
-                        } else {
-                            console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${ranglijstCategorie}, onderdeel: ${onderdeel}, seizoen: ${seizoen}`)
-
-                            return new DeelnemersOverviewModel(
-                                startlijst.titel,
-                                hydratedDeelnemers
-                            )
-                        }
-                    })
+                return this
+                    .hydrateDeelnemersWithRanglijstInfo(ranglijstCategorie, onderdeel, seizoen, startlijst.deelnemers)
+                    .then(() => startlijst)
             })
+
+            .then(startlijst =>
+                new DeelnemersOverviewModel(
+                    startlijst.titel,
+                    startlijst.deelnemers
+                )
+            )
+    }
+
+    private hydrateDeelnemersWithRanglijstInfo(categorie: string, onderdeel: string, seizoen: string, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
+        return this
+            .ranglijstService
+            .from(seizoen, categorie, onderdeel)
+            .then(ranglijst =>
+                deelnemers
+                    .map(deelnemer => {
+                        const deelnemerUitRanglijst = ranglijst.resultaten.find(resultaat => resultaat.atleet === deelnemer.naam)
+
+                        if (deelnemerUitRanglijst) {
+                            deelnemer.rang = deelnemerUitRanglijst.positie
+                            deelnemer.leeftijd = this.leeftijdVoorGeboortedatum(deelnemerUitRanglijst.geboortedatum)
+                        }
+
+                        return deelnemer
+                    })
+            )
+            .catch(error => {
+                console.info(`Info: Ranglijst info ophalen is niet gelukt. ${error}`)
+                return deelnemers
+            })
+    }
+
+    private hydrateDeelnemersObpFromPersoonlijkeRecords(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
+        const hydratedDeelnemers = deelnemers
+            .filter(deelnemer => deelnemer.obp === '' && onderdeel)
+            .map(deelnemer => this.hydrateDeelnemerObpFromPersoonlijkeRecords(onderdeel, deelnemer));
+
+        return Promise
+            .all(hydratedDeelnemers)
+            .then(() => deelnemers)
     }
 
     private hydrateDeelnemerObpFromPersoonlijkeRecords(onderdeel: Onderdeel, deelnemer: DeelnemerModel) {
