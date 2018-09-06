@@ -47,7 +47,6 @@ class DeelnemersOverviewGenerator {
                     .hydrateDeelnemersWithRanglijstInfo(ranglijstCategorie, onderdeel, seizoen, startlijst.deelnemers)
                     .then(() => startlijst)
             })
-
             .then(startlijst =>
                 new DeelnemersOverviewModel(
                     startlijst.titel,

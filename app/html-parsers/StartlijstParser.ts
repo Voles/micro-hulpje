@@ -79,15 +79,13 @@ class StartlijstParser {
 
                 theDeelnemers
                     .push(new DeelnemerModel(
+                        serie,
                         Number(volgorde),
                         deelnemerId,
                         removeDoubleSpaces(naam),
                         vereniging,
                         obp,
-                        datum,
-                        null,
-                        null,
-                        serie
+                        datum
                     ));
             });
 

@@ -7,7 +7,7 @@ describe('Deelnemers Overview Model', () => {
             let model;
 
             beforeAll(() => {
-                const deelnemers = [new DeelnemerModel(1, '', 'Niels Dequeker', 'AV Haarlem', '10' , '22-05-2018')]
+                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', '10' , '22-05-2018')]
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
@@ -23,7 +23,7 @@ describe('Deelnemers Overview Model', () => {
             let model;
 
             beforeAll(() => {
-                const deelnemers = [new DeelnemerModel(1, '', 'Niels Dequeker', 'AV Haarlem', '10' , '')]
+                const deelnemers = [new DeelnemerModel(1, 1, '', 'Niels Dequeker', 'AV Haarlem', '10' , '')]
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 

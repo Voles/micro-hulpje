@@ -49,13 +49,13 @@ class DeelnemersOverviewModel implements IOverviewModel {
     private getDeelnemersWaarvanRangBekendIs(): Array<DeelnemerModel> {
         return this
             .deelnemers
-            .filter(deelnemer => deelnemer.rang !== null)
+            .filter(deelnemer => deelnemer.rang !== undefined)
     }
 
     private getDeelnemersWaarvanLeeftijdBekendIs(): Array<DeelnemerModel> {
         return this
             .deelnemers
-            .filter(deelnemer => deelnemer.leeftijd !== null)
+            .filter(deelnemer => deelnemer.leeftijd !== undefined)
     }
 
     private withoutDatumKolom(columns: Array<{ label: string, value: string }>): Array<{ label: string, value: string }> {
