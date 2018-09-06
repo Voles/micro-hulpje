@@ -5,7 +5,8 @@ class WedstrijdTijdsschemaParser {
     parse(html: string): Promise<WedstrijdTijdsschemaModel> {
         return Promise.resolve(new WedstrijdTijdsschemaModel(
             this.parseTitel(html),
-            this.parseStartlijstLinks(html)
+            this.parseStartlijstLinks(html),
+            this.parseUitslagenLinks(html)
         ))
     }
 
@@ -17,8 +18,7 @@ class WedstrijdTijdsschemaParser {
     parseStartlijstLinks(html: string): Array<string> {
         const $ = cheerio.load(html);
 
-        const tabel = $('table.chronoloogtabel').first()
-        const onderdelen = $(tabel).find('tbody tr')
+        const onderdelen = $('table.chronoloogtabel tbody').find('tr')
 
         const startlijstLinks = []
 
@@ -34,6 +34,27 @@ class WedstrijdTijdsschemaParser {
             })
 
         return startlijstLinks
+    }
+
+    parseUitslagenLinks(html: string): Array<string> {
+        const $ = cheerio.load(html);
+
+        const onderdelen = $('table.chronoloogtabel tbody').find('tr')
+
+        const uitslagenLinks = []
+
+        onderdelen
+            .each((i, element) => {
+                const uitslagenCell = $(element).find('td').eq(3)
+                const uitslagenKnop = $(uitslagenCell).find('.btn-success').first()
+                const uitslagenLink = $(uitslagenKnop).attr('href')
+
+                if (uitslagenLink) {
+                    uitslagenLinks.push(uitslagenLink)
+                }
+            })
+
+        return uitslagenLinks
     }
 }
 
