@@ -132,11 +132,12 @@ class DeelnemersOverviewGenerator {
             .keys(theHash)
             .forEach(key => {
                 const deelnemersForSerie = theHash[key]
+                const deelnemersMetObp = deelnemersForSerie.filter(deelnemer => deelnemer.obp !== '')
 
-                deelnemersForSerie.sort((deelnemerA, deelnemerB) => deelnemerA.obpSortable - deelnemerB.obpSortable)
+                deelnemersMetObp.sort((deelnemerA, deelnemerB) => deelnemerA.obpSortable - deelnemerB.obpSortable)
 
                 const sortedDeelnemers = hoogsteGetalWint.indexOf(onderdeel) > -1 ?
-                    deelnemersForSerie.reverse() : deelnemersForSerie
+                    deelnemersMetObp.reverse() : deelnemersMetObp
 
                 sortedDeelnemers[0].besteInSerie = true
             })
