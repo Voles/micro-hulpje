@@ -3,6 +3,9 @@ import startlijstHtml from './StartlijstParserHtml';
 import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam';
 import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
 import startlijstParserHtmlMetTeams from './StartlijstParserHtmlMetTeams';
+import startlijstParserHtmlMetUitslagen from './StartlijstParserHtmlMetUitslagen';
+import DeelnemerModel from "../models/DeelnemerModel";
+import UitslagModel from "../models/UitslagModel";
 
 describe('Startlijst HTML parser', () => {
     let startlijstParser;
@@ -93,6 +96,24 @@ describe('Startlijst HTML parser', () => {
             ])
         })
     })
-})
 
-import DeelnemerModel from "../models/DeelnemerModel";
+    describe('parsing a Startlijst met uitslagen', () => {
+        beforeAll(() =>
+            startlijstParser
+                .parse(startlijstParserHtmlMetUitslagen)
+                .then(result => {
+                    parsedResult = result
+                })
+        )
+
+        it('should include all uitslagen', () => {
+            expect(parsedResult.uitslagen.length).toEqual(32)
+        })
+
+        it('should include the uitslagen', () => {
+            expect(parsedResult.uitslagen[0]).toEqual(new UitslagModel(1, '660905', 'Brend Baak', 53.26))
+            expect(parsedResult.uitslagen[1]).toEqual(new UitslagModel(2, '660250', 'Gabriel Emmanuel', 52.04))
+            expect(parsedResult.uitslagen[2]).toEqual(new UitslagModel(3, '658311', 'Hugo Jansen', 51.31))
+        })
+    })
+})

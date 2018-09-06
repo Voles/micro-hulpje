@@ -1,13 +1,16 @@
 import * as cheerio from 'cheerio';
 import StartlijstModel from '../models/StartlijstModel';
 import DeelnemerModel from "../models/DeelnemerModel";
-import {obpRawToSortable, parseAfstandRawToNumber, parseTijdRawToNumber, removeDoubleSpaces} from "../utils/strings";
+import {obpRawToSortable, removeDoubleSpaces} from "../utils/strings";
+import detectOnderdeelFromStartlijstTitel from "../utils/onderdeel-from-titel";
+import UitslagModel from "../models/UitslagModel";
 
 class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
         return Promise.resolve(new StartlijstModel(
             this.parseTitel(html),
-            this.parseDeelnemers(html)
+            this.parseDeelnemers(html),
+            this.parseUitslagen(html)
         ))
     }
 
@@ -20,7 +23,7 @@ class StartlijstParser {
         const $ = cheerio.load(html);
 
         // tabel
-        const tabel = $('.deelnemerstabel').first();
+        const tabel = $('#seriesContainer .deelnemerstabel').first();
 
         // deelnemers
         const deelnemers = tabel.find('tbody tr:not([data-deelnemer_id="removed"])');
@@ -98,6 +101,58 @@ class StartlijstParser {
             });
 
         return theDeelnemers
+    }
+
+    parseUitslagen(html: string): Array<UitslagModel> {
+        const $ = cheerio.load(html);
+
+        const tabel = $('#uitslagenContainer .deelnemerstabel').first();
+        const uitslagen = tabel.find('tbody tr');
+
+        const titel = this.parseTitel(html)
+        const onderdeel = detectOnderdeelFromStartlijstTitel(titel)
+
+        let positieIndex;
+        let naamIndex;
+        let prestatieIndex;
+
+        const headers = tabel.find('thead th, thead td')
+
+        headers.each(function (i, element) {
+            const content = $(element).text().trim();
+
+            if (content === '#') {
+                positieIndex = i;
+            }
+
+            if (content === 'Naam') {
+                naamIndex = i;
+            }
+
+            if ($(element).attr('title') === onderdeel) {
+                prestatieIndex = i;
+            }
+        });
+
+        const theUitslagen = [];
+
+        uitslagen
+            .each(function (i, element) {
+                const positie = $(element).find('td').eq(positieIndex).text();
+                const deelnemerId = $(element).attr('data-deelnemer_id');
+                const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
+                const prestatieRaw = $(element).find('td').eq(prestatieIndex).find('span.tipped').first().text();
+
+                theUitslagen
+                    .push(new UitslagModel(
+                        Number(positie),
+                        deelnemerId,
+                        removeDoubleSpaces(naam),
+                        obpRawToSortable(prestatieRaw)
+                    ))
+            })
+
+        return theUitslagen
     }
 
 }

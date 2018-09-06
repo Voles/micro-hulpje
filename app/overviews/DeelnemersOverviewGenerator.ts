@@ -8,6 +8,7 @@ import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
 import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
 import {obpRawToSortable} from "../utils/strings";
+import detectOnderdeelFromStartlijstTitel from "../utils/onderdeel-from-titel";
 
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
@@ -20,7 +21,7 @@ class DeelnemersOverviewGenerator {
             .startlijstService
             .fromUrl(startlijstUrl)
             .then(startlijst => {
-                const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
+                const onderdeel = detectOnderdeelFromStartlijstTitel(startlijst.titel)
                 if (!onderdeel) {
                     console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
                     return startlijst
@@ -32,16 +33,12 @@ class DeelnemersOverviewGenerator {
             })
             .then(startlijst => {
                 const ranglijstCategorie = this.detectRanglijstCategorieFromStartlijstTitel(startlijst.titel)
-                const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
+                const onderdeel = detectOnderdeelFromStartlijstTitel(startlijst.titel)
                 const seizoen = RanglijstSeizoenen.Outdoor2018
 
                 if (!ranglijstCategorie || !onderdeel || !seizoen) {
                     console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${ranglijstCategorie}, onderdeel: ${onderdeel}, seizoen: ${seizoen}`)
-
-                    return new DeelnemersOverviewModel(
-                        startlijst.titel,
-                        startlijst.deelnemers
-                    )
+                    return startlijst
                 }
 
                 return this
@@ -49,7 +46,7 @@ class DeelnemersOverviewGenerator {
                     .then(() => startlijst)
             })
             .then(startlijst => {
-                const onderdeel = this.detectOnderdeelFromStartlijstTitel(startlijst.titel)
+                const onderdeel = detectOnderdeelFromStartlijstTitel(startlijst.titel)
 
                 if (!onderdeel) {
                     console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
@@ -143,38 +140,6 @@ class DeelnemersOverviewGenerator {
             })
 
         return deelnemers
-    }
-
-    private detectOnderdeelFromStartlijstTitel(titel: string) : Onderdeel {
-        const onderdelen = [
-            Onderdeel.Hoogspringen,
-            Onderdeel.Verspringen,
-
-            Onderdeel.Kogelstoten2Kg,
-            Onderdeel.Kogelstoten4Kg,
-            Onderdeel.Kogelstoten3Kg,
-            Onderdeel.Kogelstoten,
-
-            Onderdeel.Speerwerpen400G,
-            Onderdeel.Speerwerpen600G,
-            Onderdeel.Speerwerpen,
-
-            Onderdeel.Kogelslingeren4Kg,
-
-            Onderdeel.Lopen60M,
-            Onderdeel.Lopen80M,
-            Onderdeel.Lopen150M,
-            Onderdeel.Lopen800M,
-            Onderdeel.Lopen1000M,
-
-            Onderdeel.Discuswerpen1Kg,
-
-            Onderdeel.Horden60MHoogte76Cm,
-            Onderdeel.Horden100MHoogte84Cm,
-            Onderdeel.Horden100M
-        ]
-
-        return onderdelen.find(onderdeel => titel.includes(onderdeel))
     }
 
     private detectRanglijstCategorieFromStartlijstTitel(titel: string): RanglijstCategorien {
