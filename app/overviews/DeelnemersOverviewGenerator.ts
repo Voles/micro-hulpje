@@ -3,12 +3,10 @@ import AtleetParser from "../html-parsers/AtleetParser";
 import DeelnemersOverviewModel from "../models/overviews/DeelnemersOverviewModel";
 import Onderdeel, {hoogsteGetalWint} from "../constants/Onderdelen";
 import DeelnemerModel from "../models/DeelnemerModel";
-import RanglijstCategorien from "../constants/RanglijstCategorien";
 import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
 import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
 import {obpRawToSortable} from "../utils/strings";
-import detectOnderdeelFromStartlijstTitel from "../utils/onderdeel-from-titel";
 
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
@@ -21,39 +19,32 @@ class DeelnemersOverviewGenerator {
             .startlijstService
             .fromUrl(startlijstUrl)
             .then(startlijst => {
-                const onderdeel = detectOnderdeelFromStartlijstTitel(startlijst.titel)
-                if (!onderdeel) {
+                if (!startlijst.onderdeel) {
                     console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
                     return startlijst
                 }
 
                 return this
-                    .hydrateDeelnemersObpFromPersoonlijkeRecords(onderdeel, startlijst.deelnemers)
+                    .hydrateDeelnemersObpFromPersoonlijkeRecords(startlijst.onderdeel, startlijst.deelnemers)
                     .then(() => startlijst)
             })
             .then(startlijst => {
-                const ranglijstCategorie = this.detectRanglijstCategorieFromStartlijstTitel(startlijst.titel)
-                const onderdeel = detectOnderdeelFromStartlijstTitel(startlijst.titel)
-                const seizoen = RanglijstSeizoenen.Outdoor2018
-
-                if (!ranglijstCategorie || !onderdeel || !seizoen) {
-                    console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${ranglijstCategorie}, onderdeel: ${onderdeel}, seizoen: ${seizoen}`)
+                if (!startlijst.categorie || !startlijst.onderdeel) {
+                    console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${startlijst.categorie}, onderdeel: ${startlijst.onderdeel}`)
                     return startlijst
                 }
 
                 return this
-                    .hydrateDeelnemersWithRanglijstInfo(ranglijstCategorie, onderdeel, seizoen, startlijst.deelnemers)
+                    .hydrateDeelnemersWithRanglijstInfo(startlijst.categorie, startlijst.onderdeel, RanglijstSeizoenen.Outdoor2018, startlijst.deelnemers)
                     .then(() => startlijst)
             })
             .then(startlijst => {
-                const onderdeel = detectOnderdeelFromStartlijstTitel(startlijst.titel)
-
-                if (!onderdeel) {
+                if (!startlijst.titel) {
                     console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
                     return startlijst
                 }
 
-                this.hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(onderdeel, startlijst.deelnemers)
+                this.hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(startlijst.onderdeel, startlijst.deelnemers)
 
                 return startlijst
             })
@@ -140,32 +131,6 @@ class DeelnemersOverviewGenerator {
             })
 
         return deelnemers
-    }
-
-    private detectRanglijstCategorieFromStartlijstTitel(titel: string): RanglijstCategorien {
-        if (titel.includes('JJA')) {
-            return RanglijstCategorien.MannenJuniorenA
-        } else if (titel.includes('JJB')) {
-            return RanglijstCategorien.MannenJuniorenB
-        } else if (titel.includes('JJC')) {
-            return RanglijstCategorien.MannenJuniorenC
-        } else if (titel.includes('JJD')) {
-            return RanglijstCategorien.MannenJuniorenD
-        } else if (titel.includes('Msen')) {
-            return RanglijstCategorien.MannenSenioren
-        } else if (titel.includes('MJA')) {
-            return RanglijstCategorien.VrouwenJuniorenA
-        } else if (titel.includes('MJB')) {
-            return RanglijstCategorien.VrouwenJuniorenB
-        } else if (titel.includes('MJC')) {
-            return RanglijstCategorien.VrouwenJuniorenC
-        } else if (titel.includes('MJD')) {
-            return RanglijstCategorien.VrouwenJuniorenD
-        } else if (titel.includes('Vsen')) {
-            return RanglijstCategorien.VrouwenSenioren
-        } else {
-            return null
-        }
     }
 
     // via https://stackoverflow.com/a/7091965
