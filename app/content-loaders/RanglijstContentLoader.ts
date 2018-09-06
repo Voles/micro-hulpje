@@ -1,5 +1,5 @@
 import IContentLoader from './IContentLoader'
-import * as puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer'
 import RanglijstOnderdeelCategorie from "../constants/RanglijstOnderdeelCategorie";
 import Onderdeel from "../constants/Onderdelen";
 

@@ -26,8 +26,9 @@
     "@types/filenamify": "2.0.1",
     "@types/jest": "23.3.1",
     "@types/json2csv": "4.2.0",
-    "@types/mkdirp": "0.5.2",
+    "@types/mkdirp-promise": "5.0.0",
     "@types/p-queue": "2.3.1",
+    "@types/puppeteer": "1.6.3",
     "@types/request": "2.47.1",
     "jest": "23.5.0",
     "typescript": "3.0.3"

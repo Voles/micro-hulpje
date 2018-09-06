@@ -1,5 +1,5 @@
 import IContentLoader from './IContentLoader';
-import * as request from 'request';
+import request from 'request';
 import { URL } from 'url';
 
 class UrlContentLoaderAdapter implements IContentLoader {

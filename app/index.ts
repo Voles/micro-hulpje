@@ -2,11 +2,10 @@ import MicroHulpje from "./domain/MicroHulpje"
 import FileWriter from "./writers/FileWriter"
 import WedstrijdTijdsschemasService from "./services/WedstrijdTijdsschemasService"
 
-import * as debugLogs from 'debug'
-import * as filenamify from'filenamify'
-import * as PQueue from 'p-queue'
-
-const mkdirpPromise = require('mkdirp-promise')
+import debugLogs from 'debug'
+import filenamify from'filenamify'
+import PQueue from 'p-queue'
+import mkdirpPromise from 'mkdirp-promise'
 
 const fileWriter = new FileWriter()
 const microHulpje = new MicroHulpje(fileWriter)
