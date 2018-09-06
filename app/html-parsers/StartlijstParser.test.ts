@@ -2,8 +2,6 @@ import StartlijstParser from './StartlijstParser';
 import startlijstHtml from './StartlijstParserHtml';
 import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam';
 import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
-import DeelnemerModel from "../models/DeelnemerModel";
-
 describe('Startlijst HTML parser', () => {
     let startlijstParser;
     let parsedResult;
@@ -76,15 +74,6 @@ describe('Startlijst HTML parser', () => {
             expect(parsedResult.deelnemers.length).toEqual(30)
         })
     })
-
-    describe('converting raw OBP to sortable', () => {
-        it('should convert a distance', () => {
-            expect(StartlijstParser.parseAfstandRawToNumber('8,20')).toEqual(8.2)
-        })
-
-        it('should convert a duration', () => {
-            expect(StartlijstParser.parseTijdRawToNumber('01:10,15')).toEqual(70.15)
-        })
-    })
 })
 
+import DeelnemerModel from "../models/DeelnemerModel";

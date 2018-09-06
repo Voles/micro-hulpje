@@ -7,6 +7,7 @@ import RanglijstCategorien from "../constants/RanglijstCategorien";
 import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
 import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
+import {obpRawToSortable} from "../utils/strings";
 
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
@@ -100,6 +101,7 @@ class DeelnemersOverviewGenerator {
 
                 if (persoonlijkRecord) {
                     deelnemer.obp = persoonlijkRecord
+                    deelnemer.obpSortable = obpRawToSortable(persoonlijkRecord)
                 }
 
                 return deelnemer

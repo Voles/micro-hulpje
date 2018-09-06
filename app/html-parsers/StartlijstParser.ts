@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import StartlijstModel from '../models/StartlijstModel';
 import DeelnemerModel from "../models/DeelnemerModel";
-import {removeDoubleSpaces} from "../utils/strings";
+import {obpRawToSortable, parseAfstandRawToNumber, parseTijdRawToNumber, removeDoubleSpaces} from "../utils/strings";
 
 class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
@@ -85,7 +85,7 @@ class StartlijstParser {
                         removeDoubleSpaces(naam),
                         vereniging,
                         obp,
-                        StartlijstParser.obpRawToSortable(obp),
+                        obpRawToSortable(obp),
                         datum
                     ));
             });
@@ -93,24 +93,6 @@ class StartlijstParser {
         return theDeelnemers
     }
 
-    static obpRawToSortable(obpRaw: string): number {
-        if (obpRaw.includes(':')) {
-            return this.parseTijdRawToNumber(obpRaw)
-        } else {
-            return this.parseAfstandRawToNumber(obpRaw)
-        }
-    }
-
-    static parseTijdRawToNumber(tijdRaw: string): number {
-        const [ minutenRaw, secondenRaw ] = tijdRaw.split(':')
-        const minuten = Number(minutenRaw)
-        const seconden = Number(secondenRaw.replace(',', '.'))
-        return (minuten * 60) + seconden
-    }
-
-    static parseAfstandRawToNumber(afstandRaw: string): number {
-        return Number(afstandRaw.replace(',', '.'))
-    }
 }
 
 export default StartlijstParser
