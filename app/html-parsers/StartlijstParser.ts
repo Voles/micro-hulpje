@@ -8,10 +8,16 @@ import UitslagModel from "../models/UitslagModel";
 class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
         return Promise.resolve(new StartlijstModel(
+            this.parseWedstrijdnaam(html),
             this.parseTitel(html),
             this.parseDeelnemers(html),
             this.parseUitslagen(html)
         ))
+    }
+
+    parseWedstrijdnaam(html: string): string {
+        const $ = cheerio.load(html);
+        return $('#topmenuHolder a').first().text();
     }
 
     parseTitel(html: string): string {
@@ -129,7 +135,7 @@ class StartlijstParser {
                 naamIndex = i;
             }
 
-            if ($(element).attr('title') === onderdeel) {
+            if ($(element).attr('title') && $(element).attr('title').includes(onderdeel)) {
                 prestatieIndex = i;
             }
         });

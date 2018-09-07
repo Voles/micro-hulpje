@@ -5,13 +5,15 @@ import Onderdeel from "../constants/Onderdelen";
 import RanglijstCategorien from "../constants/RanglijstCategorien";
 
 class StartlijstModel {
+    public wedstrijdNaam: string
     public titel: string
     public onderdeel: Onderdeel
     public categorie: RanglijstCategorien
     public deelnemers: Array<DeelnemerModel>
     public uitslagen: Array<UitslagModel>
 
-    constructor(titel: string, deelnemers: Array<DeelnemerModel>, uitslagen: Array<UitslagModel>) {
+    constructor(wedstrijdNaam: string, titel: string, deelnemers: Array<DeelnemerModel>, uitslagen: Array<UitslagModel>) {
+        this.wedstrijdNaam = wedstrijdNaam
         this.titel = titel
         this.deelnemers = deelnemers
         this.uitslagen = uitslagen
@@ -25,7 +27,7 @@ class StartlijstModel {
             return RanglijstCategorien.MannenJuniorenA
         } else if (titel.includes('JJB')) {
             return RanglijstCategorien.MannenJuniorenB
-        } else if (titel.includes('JJC')) {
+        } else if (titel.includes('JJC') || titel.includes('JC ')) {
             return RanglijstCategorien.MannenJuniorenC
         } else if (titel.includes('JJD')) {
             return RanglijstCategorien.MannenJuniorenD
@@ -35,7 +37,7 @@ class StartlijstModel {
             return RanglijstCategorien.VrouwenJuniorenA
         } else if (titel.includes('MJB')) {
             return RanglijstCategorien.VrouwenJuniorenB
-        } else if (titel.includes('MJC')) {
+        } else if (titel.includes('MJC') || titel.includes('MC ')) {
             return RanglijstCategorien.VrouwenJuniorenC
         } else if (titel.includes('MJD')) {
             return RanglijstCategorien.VrouwenJuniorenD
