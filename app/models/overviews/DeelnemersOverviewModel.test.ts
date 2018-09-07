@@ -43,10 +43,10 @@ describe('Deelnemers Overview Model', () => {
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
-            it('should leave out the Datum column', () => {
+            it('should NOT include the teamnaam', () => {
                 expect(model.toCsvFormat()).toEqual(
-                    `"#","Naam","Vereniging","Team","OBP","Info"
-1,"Niels Dequeker","AV Haarlem","Haarlemse Hardloopgoden","10",`
+                    `"#","Naam","Vereniging","OBP","Info"
+1,"Niels Dequeker","AV Haarlem","10",`
                 )
             })
         })

@@ -34,12 +34,11 @@ class DeelnemersOverviewModel implements IOverviewModel {
             { label: '#', value: 'volgorde' },
             { label: 'Naam', value: 'naam' },
             { label: 'Vereniging', value: 'vereniging'},
-            { label: 'Team', value: 'teamnaam'},
             { label: 'OBP', value: 'obp'},
             { label: 'Datum', value: 'datum' },
             { label: 'Rang', value: 'rang' },
             { label: 'Leeftijd', value: 'leeftijd' },
-            { label: 'Info', value: ''}
+            { label: 'Info', value: 'positieVergelijkingsWedstrijd'}
         ];
 
         columns = includeDatumKolom ? columns : this.withoutDatumKolom(columns)
