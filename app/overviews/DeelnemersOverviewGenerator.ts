@@ -4,6 +4,7 @@ import DeelnemersOverviewModel from "../models/overviews/DeelnemersOverviewModel
 import Onderdeel, {hoogsteGetalWint} from "../constants/Onderdelen";
 import DeelnemerModel from "../models/DeelnemerModel";
 import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
+import AtleetService from "../services/AtleetService";
 import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
 import {obpRawToSortable} from "../utils/strings";
@@ -11,6 +12,7 @@ import {obpRawToSortable} from "../utils/strings";
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
     private ranglijstService: RanglijstService = new RanglijstService()
+    private atleetService: AtleetService = new AtleetService()
     private urlContentLoader: UrlContentLoaderAdapter = new UrlContentLoaderAdapter()
     private atleetParser: AtleetParser = new AtleetParser()
 
@@ -93,9 +95,8 @@ class DeelnemersOverviewGenerator {
         const atleetUrl = `https://www.atletiek.nu/atleet/main/${deelnemer.id}/`;
 
         return this
-            .urlContentLoader
-            .load(atleetUrl)
-            .then(html => this.atleetParser.parse(html))
+            .atleetService
+            .fromUrl(atleetUrl)
             .then(atleet => {
                 const persoonlijkRecord = atleet.persoonlijkeRecords[onderdeel]
 
