@@ -10,7 +10,7 @@ class AtleetParser {
     }
 
     parsePersoonlijkeRecords(html: string): PersoonlijkeRecords {
-        const $ = cheerio.load(html);
+        const $ = cheerio.load(html)
         const tabel = $('#persoonlijkerecords').first();
         const onderdelen = tabel.find('tbody tr');
 
