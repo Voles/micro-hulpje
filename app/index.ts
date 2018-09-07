@@ -15,11 +15,22 @@ const debug = debugLogs('mh:index')
 
 const queue = new PQueue({concurrency: 1})
 
+debug('Start 🎬')
 
 /**
  * Code om alle startlijsten voor een wedstrijd te genereren
  */
+
+// Junioren C/D Finale
 const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24713/'
+
+const linksVergelijkingsWedstrijden = [
+    // 51e Nationale C-spelen
+    'https://www.atletiek.nu/wedstrijd/chronoloog/16878/',
+
+    // Nationale D-spelen
+    'https://www.atletiek.nu/wedstrijd/chronoloog/19921/'
+]
 
 wedstrijdTijdsschemasService
     .fromUrl(linkTijdsschema)
@@ -34,7 +45,10 @@ wedstrijdTijdsschemasService
                     .startlijstLinks
                     .map(link => () => {
                         return microHulpje
-                            .deelnemersOverviewVoorStartlijst(link)
+                            .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
+                                link,
+                                linksVergelijkingsWedstrijden
+                            )
                             .then(overview => {
                                 return microHulpje.writeAsCsv(overview, `./output/${wedstrijdFolderName}/${overview.titel}.csv`)
                                     .then(() => {
@@ -56,16 +70,21 @@ wedstrijdTijdsschemasService
             })
     })
 
-//
+
 // /**
 //  * Code om een enkele startlijst te genereren
 //  */
 //
+// // JJC - 100 meter horden (84cm)
 // const linkStartlijst = 'https://www.atletiek.nu/wedstrijd/startlijst/208353/41/'
 //
 // mkdirpPromise(`./output/enkele-startlijsten`)
-// microHulpje
-//     .deelnemersOverviewVoorStartlijst(linkStartlijst)
+//     .then(() => microHulpje
+//         .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
+//             linkStartlijst,
+//             linksVergelijkingsWedstrijden
+//         )
+//     )
 //     .then(overview => microHulpje.writeAsCsv(overview, `./output/enkele-startlijsten/${overview.titel}.csv`))
 //     .then(() => {
 //         debug('Aanmaken overzicht voltooid 🙌')

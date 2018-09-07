@@ -11,6 +11,7 @@ class DeelnemerModel {
     public rang: number
     public leeftijd: number
     public besteInSerie: boolean = false
+    public positieVergelijkingsWedstrijd: string
 
     constructor(serie: number, volgorde: number, id: string, naam: string, vereniging: string, teamnaam: string, obp: string, obpSortable: number, datum: string) {
         this.serie = serie

@@ -1,5 +1,3 @@
-import UrlContentLoaderAdapter from "../content-loaders/UrlContentLoader";
-import AtleetParser from "../html-parsers/AtleetParser";
 import DeelnemersOverviewModel from "../models/overviews/DeelnemersOverviewModel";
 import Onderdeel, {hoogsteGetalWint} from "../constants/Onderdelen";
 import DeelnemerModel from "../models/DeelnemerModel";
@@ -8,15 +6,14 @@ import AtleetService from "../services/AtleetService";
 import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
 import {obpRawToSortable} from "../utils/strings";
+import StartlijstModel from "../models/StartlijstModel";
 
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
     private ranglijstService: RanglijstService = new RanglijstService()
     private atleetService: AtleetService = new AtleetService()
-    private urlContentLoader: UrlContentLoaderAdapter = new UrlContentLoaderAdapter()
-    private atleetParser: AtleetParser = new AtleetParser()
 
-    generate(startlijstUrl: string): Promise<DeelnemersOverviewModel> {
+    private generateHydratedStartlijstFromUrl(startlijstUrl: string): Promise<StartlijstModel> {
         return this
             .startlijstService
             .fromUrl(startlijstUrl)
@@ -50,12 +47,41 @@ class DeelnemersOverviewGenerator {
 
                 return startlijst
             })
-            .then(startlijst =>
-                new DeelnemersOverviewModel(
+    }
+
+    generateWithComparison(startlijstUrl: string, uitslagenVorigeWedstrijdOnderdelen: Array<StartlijstModel>): Promise<DeelnemersOverviewModel> {
+        return this
+            .generateHydratedStartlijstFromUrl(startlijstUrl)
+            .then(startlijst => {
+                const startlijstVorigeWedstrijd =
+                    uitslagenVorigeWedstrijdOnderdelen
+                        .find(startlijstVorigeWedstrijd =>
+                            startlijstVorigeWedstrijd.onderdeel === startlijst.onderdeel &&
+                            startlijstVorigeWedstrijd.categorie === startlijst.categorie
+                        )
+
+                if (startlijstVorigeWedstrijd) {
+                    startlijst
+                        .deelnemers
+                        .forEach(deelnemer => {
+                            const vorigeUitslagVoorDeelnemer = startlijstVorigeWedstrijd
+                                .uitslagen
+                                .find(uitslag => uitslag.naam === deelnemer.naam)
+
+                            if (vorigeUitslagVoorDeelnemer && vorigeUitslagVoorDeelnemer.positie <= 3 && vorigeUitslagVoorDeelnemer.positie > 0) {
+                                deelnemer.positieVergelijkingsWedstrijd =
+                                    deelnemer.positieVergelijkingsWedstrijd ?
+                                        `${deelnemer.positieVergelijkingsWedstrijd}, ${startlijstVorigeWedstrijd.wedstrijdNaam}: ${vorigeUitslagVoorDeelnemer.positie}e` :
+                                        `${startlijstVorigeWedstrijd.wedstrijdNaam}: ${vorigeUitslagVoorDeelnemer.positie}e`
+                            }
+                        })
+                }
+
+                return new DeelnemersOverviewModel(
                     startlijst.titel,
                     startlijst.deelnemers
                 )
-            )
+            })
     }
 
     private hydrateDeelnemersWithRanglijstInfo(categorie: string, onderdeel: string, seizoen: string, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
