@@ -4,6 +4,7 @@ import IWriter from "../writers/IWriter";
 import IOverviewModel from "../models/overviews/IOverviewModel";
 import WedstrijdTijdsschemasService from "../services/WedstrijdTijdsschemasService";
 import StartlijstService from "../services/StartlijstService";
+import StartlijstModel from "../models/StartlijstModel";
 
 class MicroHulpje {
     private deelnemersOverviewGenerator: DeelnemersOverviewGenerator = new DeelnemersOverviewGenerator()
@@ -15,7 +16,7 @@ class MicroHulpje {
         this.writer = writer
     }
 
-    deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(url: string, urlsVorigeWedstrijd: Array<string>): Promise<DeelnemersOverviewModel> {
+    getStartlijstenVoorWedstrijdUrls(urlsVorigeWedstrijd: Array<string>): Promise<Array<StartlijstModel>> {
         return Promise
             .all(
                 urlsVorigeWedstrijd
@@ -34,15 +35,17 @@ class MicroHulpje {
                     )
             )
             .then(startlijstenVorigeWedstrijden => {
-                const flattenedStartlijstenVorigeWedstrijden = startlijstenVorigeWedstrijden
+                return startlijstenVorigeWedstrijden
                     .reduce((previousValue, currentValue) => {
                         return previousValue.concat(currentValue)
                     }, [])
-
-                return this
-                    .deelnemersOverviewGenerator
-                    .generateWithComparison(url, flattenedStartlijstenVorigeWedstrijden)
             })
+    }
+
+    deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(url: string, startlijstenVorigeWedstrijden: Array<StartlijstModel>): Promise<DeelnemersOverviewModel> {
+        return this
+            .deelnemersOverviewGenerator
+            .generateWithComparison(url, startlijstenVorigeWedstrijden)
     }
 
     writeAsCsv(overview: IOverviewModel, path: string): Promise<void> {
