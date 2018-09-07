@@ -18,6 +18,12 @@ export default function detectOnderdeelFromStartlijstTitel(titel: string) : Onde
         Onderdeel.Kogelslingeren3Kg,
         Onderdeel.Kogelslingeren4Kg,
 
+        Onderdeel.Horden60MHoogte76Cm,
+        Onderdeel.Horden80MHoogte76Cm,
+        Onderdeel.Horden100MHoogte84Cm,
+        Onderdeel.Horden100M,
+        Onderdeel.Horden300MHoogte76Cm,
+
         Onderdeel.Lopen60M,
         Onderdeel.Lopen80M,
         Onderdeel.Lopen150M,
@@ -30,13 +36,7 @@ export default function detectOnderdeelFromStartlijstTitel(titel: string) : Onde
         Onderdeel.Lopen1500MSteeple,
 
         Onderdeel.Discuswerpen1Kg,
-        Onderdeel.Discuswerpen075Kg,
-
-        Onderdeel.Horden60MHoogte76Cm,
-        Onderdeel.Horden80MHoogte76Cm,
-        Onderdeel.Horden100MHoogte84Cm,
-        Onderdeel.Horden100M,
-        Onderdeel.Horden300MHoogte76Cm
+        Onderdeel.Discuswerpen075Kg
     ]
 
     return onderdelen.find(onderdeel => titel.includes(onderdeel))
