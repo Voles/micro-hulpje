@@ -3,21 +3,20 @@ import WedstrijdTijdsschemaModel from "../models/WedstrijdTijdsschemaModel";
 
 class WedstrijdTijdsschemaParser {
     parse(html: string): Promise<WedstrijdTijdsschemaModel> {
+        const $ = cheerio.load(html)
+
         return Promise.resolve(new WedstrijdTijdsschemaModel(
-            this.parseTitel(html),
-            this.parseStartlijstLinks(html),
-            this.parseUitslagenLinks(html)
+            this.parseTitel($),
+            this.parseStartlijstLinks($),
+            this.parseUitslagenLinks($)
         ))
     }
 
-    parseTitel(html: string): string {
-        const $ = cheerio.load(html);
+    parseTitel($: CheerioStatic): string {
         return $('#topmenuHolder li').first().find('a').first().text().trim()
     }
 
-    parseStartlijstLinks(html: string): Array<string> {
-        const $ = cheerio.load(html);
-
+    parseStartlijstLinks($: CheerioStatic): Array<string> {
         const onderdelen = $('table.chronoloogtabel tbody').find('tr')
 
         const startlijstLinks = []
@@ -36,9 +35,7 @@ class WedstrijdTijdsschemaParser {
         return startlijstLinks
     }
 
-    parseUitslagenLinks(html: string): Array<string> {
-        const $ = cheerio.load(html);
-
+    parseUitslagenLinks($: CheerioStatic): Array<string> {
         const onderdelen = $('table.chronoloogtabel tbody').find('tr')
 
         const uitslagenLinks = []

@@ -5,32 +5,29 @@ import {removeDoubleSpaces} from "../utils/strings";
 
 class RanglijstParser {
     parse(html: string): Promise<RanglijstModel> {
+        const $ = cheerio.load(html)
+
         return Promise.resolve(new RanglijstModel(
-            this.parseSeizoen(html),
-            this.parseCategorie(html),
-            this.parseOnderdeel(html),
-            this.parseResultaten(html)
+            this.parseSeizoen($),
+            this.parseCategorie($),
+            this.parseOnderdeel($),
+            this.parseResultaten($)
         ))
     }
 
-    parseSeizoen(html: string): string {
-        const $ = cheerio.load(html);
+    parseSeizoen($: CheerioStatic): string {
         return $('.hoofdmenu .yearPickerBtn').text()
     }
 
-    parseCategorie(html: string): string {
-        const $ = cheerio.load(html);
+    parseCategorie($: CheerioStatic): string {
         return $('.hoofdmenu .categoryPickerBtn').text()
     }
 
-    parseOnderdeel(html: string): string {
-        const $ = cheerio.load(html);
+    parseOnderdeel($: CheerioStatic): string {
         return $('.hoofdmenu .onderdeelPickerBtn').text()
     }
 
-    parseResultaten(html: string): Array<ResultaatModel> {
-        const $ = cheerio.load(html);
-
+    parseResultaten($: CheerioStatic): Array<ResultaatModel> {
         const tabel = $('#ranglijstDeelnemers').first()
 
         const resultaten = tabel.find('tbody tr');

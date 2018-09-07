@@ -4,13 +4,14 @@ import PersoonlijkeRecords from "../models/PersoonlijkeRecordsModel";
 
 class AtleetParser {
     parse(html: string): Promise<AtleetModel> {
+        const $ = cheerio.load(html)
+
         return Promise.resolve(new AtleetModel(
-            this.parsePersoonlijkeRecords(html)
+            this.parsePersoonlijkeRecords($)
         ))
     }
 
-    parsePersoonlijkeRecords(html: string): PersoonlijkeRecords {
-        const $ = cheerio.load(html)
+    parsePersoonlijkeRecords($: CheerioStatic): PersoonlijkeRecords {
         const tabel = $('#persoonlijkerecords').first();
         const onderdelen = tabel.find('tbody tr');
 

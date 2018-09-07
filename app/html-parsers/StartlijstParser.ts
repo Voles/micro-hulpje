@@ -7,27 +7,25 @@ import UitslagModel from "../models/UitslagModel";
 
 class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
+        const $ = cheerio.load(html)
+
         return Promise.resolve(new StartlijstModel(
-            this.parseWedstrijdnaam(html),
-            this.parseTitel(html),
-            this.parseDeelnemers(html),
-            this.parseUitslagen(html)
+            this.parseWedstrijdnaam($),
+            this.parseTitel($),
+            this.parseDeelnemers($),
+            this.parseUitslagen($)
         ))
     }
 
-    parseWedstrijdnaam(html: string): string {
-        const $ = cheerio.load(html);
+    parseWedstrijdnaam($: CheerioStatic): string {
         return $('#topmenuHolder a').first().text();
     }
 
-    parseTitel(html: string): string {
-        const $ = cheerio.load(html);
+    parseTitel($: CheerioStatic): string {
         return $('#primarycontent h1').first().text();
     }
 
-    parseDeelnemers(html: string): Array<DeelnemerModel> {
-        const $ = cheerio.load(html);
-
+    parseDeelnemers($: CheerioStatic): Array<DeelnemerModel> {
         // tabel
         const tabel = $('#seriesContainer .deelnemerstabel').first();
 
@@ -109,13 +107,11 @@ class StartlijstParser {
         return theDeelnemers
     }
 
-    parseUitslagen(html: string): Array<UitslagModel> {
-        const $ = cheerio.load(html);
-
+    parseUitslagen($: CheerioStatic): Array<UitslagModel> {
         const tabel = $('#uitslagenContainer .deelnemerstabel').first();
         const uitslagen = tabel.find('tbody tr');
 
-        const titel = this.parseTitel(html)
+        const titel = this.parseTitel($)
         const onderdeel = detectOnderdeelFromStartlijstTitel(titel)
 
         let positieIndex;
