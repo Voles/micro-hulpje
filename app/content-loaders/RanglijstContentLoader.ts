@@ -87,6 +87,7 @@ class RanglijstContentLoaderAdapter implements IContentLoader {
             case Onderdeel.Horden60MHoogte76Cm:
                 return '60mH'
 
+            case Onderdeel.Horden80MHoogte76Cm:
             case Onderdeel.Horden300MHoogte76Cm:
                 return '80mH'
 
@@ -126,6 +127,7 @@ class RanglijstContentLoaderAdapter implements IContentLoader {
             case Onderdeel.Lopen80M:
             case Onderdeel.Lopen150M:
             case Onderdeel.Lopen300M:
+            case Onderdeel.Horden60MHoogte76Cm:
             case Onderdeel.Horden80MHoogte76Cm:
             case Onderdeel.Horden100MHoogte84Cm:
             case Onderdeel.Horden300MHoogte76Cm:
