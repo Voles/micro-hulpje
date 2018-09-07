@@ -38,17 +38,18 @@ wedstrijdTijdsschemasService
         const wedstrijdFolderName = filenamify(tijdsschema.titel, { replacement: '-' });
 
         return mkdirpPromise(`./output/${wedstrijdFolderName}`)
-            .then(() => {
+            .then(() => microHulpje.getStartlijstenVoorWedstrijdUrls(linksVergelijkingsWedstrijden))
+            .then(startlijstenVorigeWedstrijden => {
                 debug(`Map '${wedstrijdFolderName}' aangemaakt voor overzichten`)
 
                 const deelnemersOverviews = tijdsschema
                     .startlijstLinks
                     .map(link => () => {
-                        return microHulpje
-                            .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
-                                link,
-                                linksVergelijkingsWedstrijden
-                            )
+                            return microHulpje
+                                .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
+                                    link,
+                                    startlijstenVorigeWedstrijden
+                                )
                             .then(overview => {
                                 return microHulpje.writeAsCsv(overview, `./output/${wedstrijdFolderName}/${overview.titel}.csv`)
                                     .then(() => {
