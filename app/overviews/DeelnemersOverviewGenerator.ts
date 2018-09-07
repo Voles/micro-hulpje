@@ -7,6 +7,7 @@ import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
 import {obpRawToSortable} from "../utils/strings";
 import StartlijstModel from "../models/StartlijstModel";
+import RanglijstCategorien from "../constants/RanglijstCategorien";
 
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
@@ -28,6 +29,14 @@ class DeelnemersOverviewGenerator {
                     .then(() => startlijst)
             })
             .then(startlijst => {
+                if (
+                    startlijst.onderdeel === Onderdeel.Horden80MHoogte76Cm &&
+                    startlijst.categorie === RanglijstCategorien.MannenJuniorenC
+                ) {
+                    console.info(`Info: Er bestaat geen ranglijst voor ${RanglijstCategorien.MannenJuniorenC} op ${Onderdeel.Horden80MHoogte76Cm}. Er is dus geen ranglijst info opgehaald.`)
+                    return startlijst
+                }
+
                 if (!startlijst.categorie || !startlijst.onderdeel) {
                     console.info(`Info: Ranglijst info ophalen is niet gelukt. Categorie: ${startlijst.categorie}, onderdeel: ${startlijst.onderdeel}`)
                     return startlijst
