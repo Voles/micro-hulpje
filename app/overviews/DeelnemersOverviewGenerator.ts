@@ -62,12 +62,19 @@ class DeelnemersOverviewGenerator {
         return this
             .generateHydratedStartlijstFromUrl(startlijstUrl)
             .then(startlijst => {
-                const startlijstVorigeWedstrijd =
+                const startlijstVorigeWedstrijdVoorZelfdeOnderdeel =
                     uitslagenVorigeWedstrijdOnderdelen
-                        .find(startlijstVorigeWedstrijd =>
+                        .filter(startlijstVorigeWedstrijd =>
                             startlijstVorigeWedstrijd.onderdeel === startlijst.onderdeel &&
                             startlijstVorigeWedstrijd.categorie === startlijst.categorie
                         )
+
+                const startlijstMetFinaleInDeTitel = startlijstVorigeWedstrijdVoorZelfdeOnderdeel
+                    .find(startlijst => startlijst.titel.toLowerCase().includes('finale'))
+
+                const startlijstVorigeWedstrijd = startlijstMetFinaleInDeTitel ?
+                    startlijstMetFinaleInDeTitel :
+                    startlijstVorigeWedstrijdVoorZelfdeOnderdeel[0]
 
                 if (startlijstVorigeWedstrijd) {
                     startlijst
