@@ -72,26 +72,28 @@ wedstrijdTijdsschemasService
     })
 
 
-// /**
-//  * Code om een enkele startlijst te genereren
-//  */
-//
-// // JJC - 100 meter horden (84cm)
-// const linkStartlijst = 'https://www.atletiek.nu/wedstrijd/startlijst/208353/41/'
-//
-// mkdirpPromise(`./output/enkele-startlijsten`)
-//     .then(() => microHulpje
-//         .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
-//             linkStartlijst,
-//             linksVergelijkingsWedstrijden
-//         )
-//     )
-//     .then(overview => microHulpje.writeAsCsv(overview, `./output/enkele-startlijsten/${overview.titel}.csv`))
-//     .then(() => {
-//         debug('Aanmaken overzicht voltooid 🙌')
-//         process.exit()
-//     })
-//     .catch(error => {
-//         console.error(`🚩 ${error}`);
-//         process.exit(1)
-//     })
+/**
+ * Code om een enkele startlijst te genereren
+ */
+
+// JJC - 100 meter horden (84cm)
+const linkStartlijst = 'https://www.atletiek.nu/wedstrijd/startlijst/208353/41/'
+
+mkdirpPromise(`./output/enkele-startlijsten`)
+    .then(() => microHulpje.getStartlijstenVoorWedstrijdUrls(linksVergelijkingsWedstrijden))
+    .then(startlijstenVorigeWedstrijden => {
+        return microHulpje
+            .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
+                linkStartlijst,
+                startlijstenVorigeWedstrijden
+            )
+    })
+    .then(overview => microHulpje.writeAsCsv(overview, `./output/enkele-startlijsten/${overview.titel}.csv`))
+    .then(() => {
+        debug('Aanmaken overzicht voltooid 🙌')
+        process.exit()
+    })
+    .catch(error => {
+        console.error(`🚩 ${error}`);
+        process.exit(1)
+    })
