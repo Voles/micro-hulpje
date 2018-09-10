@@ -12,6 +12,7 @@ class StartlijstParser {
         return Promise.resolve(new StartlijstModel(
             this.parseWedstrijdnaam($),
             this.parseTitel($),
+            this.parseStarttijd($),
             this.parseDeelnemers($),
             this.parseUitslagen($)
         ))
@@ -23,6 +24,10 @@ class StartlijstParser {
 
     parseTitel($: CheerioStatic): string {
         return $('#primarycontent h1').first().text();
+    }
+
+    parseStarttijd($: CheerioStatic): string {
+        return $('#primarycontent h3').eq(1).text().trim();
     }
 
     parseDeelnemers($: CheerioStatic): Array<DeelnemerModel> {

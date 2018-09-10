@@ -31,6 +31,12 @@ describe('Startlijst HTML parser', () => {
             })
         })
 
+        describe('the Startlijst starttijd', () => {
+            it('should be present', () => {
+                expect(parsedResult.starttijd).toEqual('19:00u - 19:15u');
+            })
+        })
+
         describe('the Startlijst deelnemers', () => {
             it('should include all deelnemers', () => {
                 expect(parsedResult.deelnemers.length).toEqual(3)

@@ -7,14 +7,16 @@ import RanglijstCategorien from "../constants/RanglijstCategorien";
 class StartlijstModel {
     public wedstrijdNaam: string
     public titel: string
+    public starttijd: string
     public onderdeel: Onderdeel
     public categorie: RanglijstCategorien
     public deelnemers: Array<DeelnemerModel>
     public uitslagen: Array<UitslagModel>
 
-    constructor(wedstrijdNaam: string, titel: string, deelnemers: Array<DeelnemerModel>, uitslagen: Array<UitslagModel>) {
+    constructor(wedstrijdNaam: string, titel: string, starttijd: string, deelnemers: Array<DeelnemerModel>, uitslagen: Array<UitslagModel>) {
         this.wedstrijdNaam = wedstrijdNaam
         this.titel = titel
+        this.starttijd = starttijd
         this.deelnemers = deelnemers
         this.uitslagen = uitslagen
 
