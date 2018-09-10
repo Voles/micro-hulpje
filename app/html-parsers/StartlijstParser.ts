@@ -40,6 +40,7 @@ class StartlijstParser {
         let naamIndex;
         let verenigingIndex;
         let teamIndex;
+        let startnummerIndex;
 
         const headers = tabel.find('thead th, thead td');
 
@@ -65,6 +66,10 @@ class StartlijstParser {
             if (content === 'Team') {
                 teamIndex = i;
             }
+
+            if (content === 'Snr') {
+                startnummerIndex = i;
+            }
         });
 
         const theDeelnemers = [];
@@ -81,27 +86,37 @@ class StartlijstParser {
                 const deelnemerId = $(element).attr('data-deelnemer_id');
                 const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
                 const vereniging = $(element).find('td').eq(verenigingIndex).find('a').first().text();
-                const team = $(element).find('td').eq(teamIndex).find('a').first().text();
+                const team = $(element).find('td').eq(teamIndex).find('a').first().text().trim();
+                const startnummer = $(element).find('td').eq(startnummerIndex).text().trim();
                 const obpRaw = $(element).find('td').eq(obpIndex).find('span').first().find('span.tipped').first().text();
                 const tipped = $(element).find('td').eq(obpIndex).find('.tipped').first().attr('title');
                 const datumRegex = /(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}/;
                 const findDate = datumRegex.exec(tipped);
-                const datum = findDate ? findDate[0] : '';
+                const datum = findDate ? findDate[0] : undefined;
 
                 const obp = obpRaw === '---' ? '' : obpRaw;
 
+                const deelnemer = new DeelnemerModel({
+                    serie: serie,
+                    volgorde: Number(volgorde),
+                    id: deelnemerId,
+                    naam: removeDoubleSpaces(naam),
+                    vereniging: vereniging,
+                    obp: obp,
+                    obpSortable: obpRawToSortable(obp),
+                    datum: datum
+                })
+
+                if (team) {
+                    deelnemer.teamnaam = team
+                }
+
+                if (startnummer) {
+                    deelnemer.startnummer = startnummer
+                }
+
                 theDeelnemers
-                    .push(new DeelnemerModel(
-                        serie,
-                        Number(volgorde),
-                        deelnemerId,
-                        removeDoubleSpaces(naam),
-                        vereniging,
-                        team,
-                        obp,
-                        obpRawToSortable(obp),
-                        datum
-                    ));
+                    .push(deelnemer);
             });
 
         return theDeelnemers

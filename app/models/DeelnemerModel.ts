@@ -1,3 +1,18 @@
+interface DeelnemerProperties {
+    serie: number
+    volgorde: number
+    id?: string
+    naam: string
+    vereniging: string
+    teamnaam?: string
+    obp: string
+    obpSortable: number
+    datum?: string
+    rang?: number
+    leeftijd?: number
+    startnummer?: string
+}
+
 class DeelnemerModel {
     public serie: number
     public volgorde: number
@@ -12,17 +27,21 @@ class DeelnemerModel {
     public leeftijd: number
     public besteInSerie: boolean = false
     public positieVergelijkingsWedstrijd: string
+    public startnummer: string
 
-    constructor(serie: number, volgorde: number, id: string, naam: string, vereniging: string, teamnaam: string, obp: string, obpSortable: number, datum: string) {
-        this.serie = serie
-        this.volgorde = volgorde
-        this.id = id
-        this.naam = naam
-        this.vereniging = vereniging
-        this.teamnaam = teamnaam
-        this.obp = obp
-        this.obpSortable = obpSortable
-        this.datum = datum
+    constructor(properties: DeelnemerProperties) {
+        this.serie = properties.serie
+        this.volgorde = properties.volgorde
+        this.id = properties.id
+        this.naam = properties.naam
+        this.vereniging = properties.vereniging
+        this.teamnaam = properties.teamnaam
+        this.obp = properties.obp
+        this.obpSortable = properties.obpSortable
+        this.datum = properties.datum
+        this.rang = properties.rang
+        this.leeftijd = properties.leeftijd
+        this.startnummer = properties.startnummer
     }
 }
 

@@ -4,6 +4,7 @@ import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam
 import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
 import startlijstParserHtmlMetTeams from './StartlijstParserHtmlMetTeams';
 import startlijstParserHtmlMetUitslagen from './StartlijstParserHtmlMetUitslagen';
+import startlijstParserHtmlZonderStartnummers from './StartlijstParserHtmlZonderStartnummers';
 import DeelnemerModel from "../models/DeelnemerModel";
 import UitslagModel from "../models/UitslagModel";
 
@@ -32,11 +33,48 @@ describe('Startlijst HTML parser', () => {
 
         describe('the Startlijst deelnemers', () => {
             it('should include all deelnemers', () => {
-                expect(parsedResult.deelnemers).toEqual([
-                    new DeelnemerModel(1, 4, '661313', 'Jared Broers', 'AV Hera', '', '14,10', 14.1, '10-05-2018'),
-                    new DeelnemerModel(1, 5, '663660', 'Jeff Tesselaar', 'AV Hera', '', '14,80', 14.8, '08-06-2018'),
-                    new DeelnemerModel(1, 6, '670693', 'Enrique van Velzen', 'PAC', '', '', 0, '')
-                ]);
+                expect(parsedResult.deelnemers.length).toEqual(3)
+
+                expect(parsedResult.deelnemers[0]).toEqual(
+                    new DeelnemerModel({
+                        serie: 1,
+                        volgorde: 4,
+                        id: '661313',
+                        naam: 'Jared Broers',
+                        vereniging: 'AV Hera',
+                        obp: '14,10',
+                        obpSortable: 14.1,
+                        datum: '10-05-2018',
+                        startnummer: '733'
+                    })
+                );
+
+                expect(parsedResult.deelnemers[1]).toEqual(
+                    new DeelnemerModel({
+                        serie: 1,
+                        volgorde: 5,
+                        id: '663660',
+                        naam: 'Jeff Tesselaar',
+                        vereniging: 'AV Hera',
+                        obp: '14,80',
+                        obpSortable: 14.8,
+                        datum: '08-06-2018',
+                        startnummer: '789'
+                    })
+                )
+
+                expect(parsedResult.deelnemers[2]).toEqual(
+                    new DeelnemerModel({
+                        serie: 1,
+                        volgorde: 6,
+                        id: '670693',
+                        naam: 'Enrique van Velzen',
+                        vereniging: 'PAC',
+                        obp: '',
+                        obpSortable: 0,
+                        startnummer: '808'
+                    })
+                )
             })
         })
     })
@@ -52,17 +90,17 @@ describe('Startlijst HTML parser', () => {
 
         it('should include the full name of the deelnemer', () => {
             expect(parsedResult.deelnemers[6]).toEqual(
-                new DeelnemerModel(
-                    1,
-                    6,
-                    '436434',
-                    'Anja Klunder-Schonberger',
-                    'Nijmegen Atletiek',
-                    '',
-                    '25,81',
-                    25.81,
-                    '29-04-2016'
-                )
+                new DeelnemerModel({
+                    serie: 1,
+                    volgorde: 6,
+                    id: '436434',
+                    naam: 'Anja Klunder-Schonberger',
+                    vereniging: 'Nijmegen Atletiek',
+                    obp: '25,81',
+                    obpSortable: 25.81,
+                    datum: '29-04-2016',
+                    startnummer: '6015'
+                })
             )
         })
     })
@@ -114,6 +152,45 @@ describe('Startlijst HTML parser', () => {
             expect(parsedResult.uitslagen[0]).toEqual(new UitslagModel(1, '660905', 'Brend Baak', 53.26))
             expect(parsedResult.uitslagen[1]).toEqual(new UitslagModel(2, '660250', 'Gabriel Emmanuel', 52.04))
             expect(parsedResult.uitslagen[2]).toEqual(new UitslagModel(3, '658311', 'Hugo Jansen', 51.31))
+        })
+    })
+
+    describe('parsing a Startlijst zonder startnummers', () => {
+        beforeAll(() =>
+            startlijstParser
+                .parse(startlijstParserHtmlZonderStartnummers)
+                .then(result => {
+                    parsedResult = result
+                })
+        )
+
+        it('should include all deelnemers', () => {
+            expect(parsedResult.deelnemers.length).toEqual(2)
+        })
+
+        it('should have undefined as value for the startnummer', () => {
+            expect(parsedResult.deelnemers[0]).toEqual(new DeelnemerModel({
+                id: '676912',
+                serie: 1,
+                volgorde: 1,
+                naam: 'Meike de Graauw',
+                vereniging: 'Prins Hendrik',
+                obp: '',
+                obpSortable: 0,
+                startnummer: undefined
+            }))
+
+            expect(parsedResult.deelnemers[1]).toEqual(new DeelnemerModel({
+                id: '666160',
+                serie: 1,
+                volgorde: 2,
+                naam: 'Jessica Sluiter',
+                vereniging: 'Prins Hendrik',
+                obp: '19,40',
+                obpSortable: 19.4,
+                datum: '07-07-2018',
+                startnummer: undefined
+            }))
         })
     })
 })

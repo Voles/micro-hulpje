@@ -52,7 +52,7 @@ class DeelnemersOverviewModel implements IOverviewModel {
     private getDeelnemersWaarvanDatumBekendIs(): Array<DeelnemerModel> {
         return this
             .deelnemers
-            .filter(deelnemer => deelnemer.datum !== '')
+            .filter(deelnemer => deelnemer.datum !== undefined)
     }
 
     private getDeelnemersWaarvanRangBekendIs(): Array<DeelnemerModel> {
