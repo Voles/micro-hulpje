@@ -94,7 +94,7 @@ class DeelnemersOverviewGenerator {
                 }
 
                 return new DeelnemersOverviewModel(
-                    startlijst.titel,
+                    `⏱ ${startlijst.starttijd} 🔶 ${startlijst.titel}`,
                     startlijst.deelnemers
                 )
             })
