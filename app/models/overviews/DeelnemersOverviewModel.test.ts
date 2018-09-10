@@ -74,5 +74,29 @@ describe('Deelnemers Overview Model', () => {
                 )
             })
         })
+
+        describe('when a startnummer is present', () => {
+            let model;
+
+            beforeAll(() => {
+                const deelnemers = [new DeelnemerModel({
+                    serie: 1,
+                    volgorde: 1,
+                    naam: 'Niels Dequeker',
+                    vereniging: 'AV Haarlem',
+                    obp: '10',
+                    obpSortable: 10,
+                    startnummer: '007'
+                })]
+                model = new DeelnemersOverviewModel('', deelnemers)
+            })
+
+            it('should include the startnummers', () => {
+                expect(model.toCsvFormat()).toEqual(
+                    `"#","Snr","Naam","Vereniging","OBP","Info"
+1,"007","Niels Dequeker","AV Haarlem","10",`
+                )
+            })
+        })
     })
 })
