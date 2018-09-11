@@ -18,6 +18,7 @@ export default function detectOnderdeelFromStartlijstTitel(titel: string) : Onde
         Onderdeel.Kogelslingeren3Kg,
         Onderdeel.Kogelslingeren4Kg,
 
+        Onderdeel.Horden40M,
         Onderdeel.Horden60MHoogte76Cm,
         Onderdeel.Horden80MHoogte76Cm,
         Onderdeel.Horden100MHoogte84Cm,

@@ -29,6 +29,7 @@ enum Onderdeel {
     Discuswerpen1Kg = 'Discuswerpen 1 kilogram',
     Discuswerpen075Kg = 'Discuswerpen 0,75 kilogram',
 
+    Horden40M = '40 meter horden',
     Horden60MHoogte76Cm = '60 meter horden (76cm)',
     Horden80MHoogte76Cm = '80 meter horden (76cm)',
     Horden100M = '100 meter horden',
