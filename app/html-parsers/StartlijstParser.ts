@@ -4,6 +4,7 @@ import DeelnemerModel from "../models/DeelnemerModel";
 import {obpRawToSortable, removeDoubleSpaces} from "../utils/strings";
 import detectOnderdeelFromStartlijstTitel from "../utils/onderdeel-from-titel";
 import UitslagModel from "../models/UitslagModel";
+import sortBy from 'lodash/sortBy'
 
 class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
@@ -124,9 +125,7 @@ class StartlijstParser {
                     .push(deelnemer);
             });
 
-        theDeelnemers.sort((a, b) => a.volgorde - b.volgorde)
-
-        return theDeelnemers
+        return sortBy(theDeelnemers, ['serie', 'volgorde'])
     }
 
     parseUitslagen($: CheerioStatic): Array<UitslagModel> {

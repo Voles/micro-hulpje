@@ -136,7 +136,7 @@ describe('Startlijst HTML parser', () => {
 
         it('should include the teamnaam voor alle deelnemers', () => {
             expect(parsedResult.deelnemers.map(deelnemer => deelnemer.teamnaam)).toEqual([
-                'AV Sprint JD Team 1', 'Hellas Utrecht JD Team 1', 'AV De Spartaan JD Team 1', 'AV De Spartaan JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'Groningen Atletiek JD Team 1', 'ARV Ilion JD', 'Hellas Utrecht JD Team 1', 'Groningen Atletiek JD Team 1', 'Altis JD Team 1', 'AV Sparta JD Team 1', 'GAC Hilversum JD Team 1', 'AV Sparta JD Team 1', 'ARV Ilion JD', 'ARV Ilion JD', 'AV Sparta JD Team 1', 'Altis JD Team 1', 'Altis JD Team 1', 'GAC Hilversum JD Team 1', 'GAC Hilversum JD Team 1', 'Prins Hendrik JD Team 1', 'Haag Atletiek JD Team 1', 'AV Sprint JD Team 1', 'Haag Atletiek JD Team 1', 'Prins Hendrik JD Team 1', 'Prins Hendrik JD Team 1', 'Haag Atletiek JD Team 1', 'Hellas Utrecht JD Team 1', 'AV Sprint JD Team 1'
+                'Hellas Utrecht JD Team 1', 'Hellas Utrecht JD Team 1', 'AV Sparta JD Team 1', 'GAC Hilversum JD Team 1', 'AV Sprint JD Team 1', 'Hellas Utrecht JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'Altis JD Team 1', 'Altis JD Team 1', 'Haag Atletiek JD Team 1', 'Haag Atletiek JD Team 1', 'AV De Spartaan JD Team 1', 'ARV Ilion JD', 'GAC Hilversum JD Team 1', 'Altis JD Team 1', 'GAC Hilversum JD Team 1', 'Prins Hendrik JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'AV Sparta JD Team 1', 'AV Sparta JD Team 1', 'Prins Hendrik JD Team 1', 'Prins Hendrik JD Team 1', 'AV Sprint JD Team 1', 'Groningen Atletiek JD Team 1', 'ARV Ilion JD', 'ARV Ilion JD', 'Haag Atletiek JD Team 1', 'AV Sprint JD Team 1'
             ])
         })
     })
