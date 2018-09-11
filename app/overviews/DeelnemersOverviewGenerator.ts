@@ -170,7 +170,9 @@ class DeelnemersOverviewGenerator {
                 const sortedDeelnemers = hoogsteGetalWint.indexOf(onderdeel) > -1 ?
                     deelnemersMetObp.reverse() : deelnemersMetObp
 
-                sortedDeelnemers[0].besteInSerie = true
+                if (sortedDeelnemers[0]) {
+                    sortedDeelnemers[0].besteInSerie = true
+                }
             })
 
         return deelnemers
