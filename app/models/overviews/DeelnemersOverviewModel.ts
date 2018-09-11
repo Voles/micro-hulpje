@@ -26,7 +26,18 @@ class DeelnemersOverviewModel implements IOverviewModel {
                 deelnemer.naam =  `${deelnemer.naam} 🏆`
             })
 
-        const formatter = new CsvFormatter(columns, this.deelnemers)
+        const deelnemersSeparatedBySerie = this
+            .deelnemers
+            .reduce((previousValue, currentValue) => {
+                const previousDeelnemer = previousValue[previousValue.length - 1];
+                if (previousDeelnemer && previousDeelnemer.serie !== currentValue.serie) {
+                    return previousValue.concat([{info: ''}, currentValue])
+                } else {
+                    return previousValue.concat([currentValue])
+                }
+            }, [])
+
+        const formatter = new CsvFormatter(columns, deelnemersSeparatedBySerie)
         return formatter.format()
     }
 
