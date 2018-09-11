@@ -95,7 +95,7 @@ describe('Startlijst HTML parser', () => {
         )
 
         it('should include the full name of the deelnemer', () => {
-            expect(parsedResult.deelnemers[6]).toEqual(
+            expect(parsedResult.deelnemers[5]).toEqual(
                 new DeelnemerModel({
                     serie: 1,
                     volgorde: 6,
@@ -136,7 +136,7 @@ describe('Startlijst HTML parser', () => {
 
         it('should include the teamnaam voor alle deelnemers', () => {
             expect(parsedResult.deelnemers.map(deelnemer => deelnemer.teamnaam)).toEqual([
-                'Hellas Utrecht JD Team 1', 'Hellas Utrecht JD Team 1', 'AV Sparta JD Team 1', 'GAC Hilversum JD Team 1', 'AV Sprint JD Team 1', 'Hellas Utrecht JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'Altis JD Team 1', 'Altis JD Team 1', 'Haag Atletiek JD Team 1', 'Haag Atletiek JD Team 1', 'AV De Spartaan JD Team 1', 'ARV Ilion JD', 'GAC Hilversum JD Team 1', 'Altis JD Team 1', 'GAC Hilversum JD Team 1', 'Prins Hendrik JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'AV Sparta JD Team 1', 'AV Sparta JD Team 1', 'Prins Hendrik JD Team 1', 'Prins Hendrik JD Team 1', 'AV Sprint JD Team 1', 'Groningen Atletiek JD Team 1', 'ARV Ilion JD', 'ARV Ilion JD', 'Haag Atletiek JD Team 1', 'AV Sprint JD Team 1'
+                'AV Sprint JD Team 1', 'Hellas Utrecht JD Team 1', 'AV De Spartaan JD Team 1', 'AV De Spartaan JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'Groningen Atletiek JD Team 1', 'ARV Ilion JD', 'Hellas Utrecht JD Team 1', 'Groningen Atletiek JD Team 1', 'Altis JD Team 1', 'AV Sparta JD Team 1', 'GAC Hilversum JD Team 1', 'AV Sparta JD Team 1', 'ARV Ilion JD', 'ARV Ilion JD', 'AV Sparta JD Team 1', 'Altis JD Team 1', 'Altis JD Team 1', 'GAC Hilversum JD Team 1', 'GAC Hilversum JD Team 1', 'Prins Hendrik JD Team 1', 'Haag Atletiek JD Team 1', 'AV Sprint JD Team 1', 'Haag Atletiek JD Team 1', 'Prins Hendrik JD Team 1', 'Prins Hendrik JD Team 1', 'Haag Atletiek JD Team 1', 'Hellas Utrecht JD Team 1', 'AV Sprint JD Team 1'
             ])
         })
     })
@@ -150,14 +150,24 @@ describe('Startlijst HTML parser', () => {
                 })
         )
 
-        it('should include all uitslagen', () => {
-            expect(parsedResult.uitslagen.length).toEqual(32)
+        describe('the deelnemers', () => {
+            it('should be ordered ascending by volgorde', () => {
+                expect(parsedResult.deelnemers[0].volgorde).toEqual(1)
+                expect(parsedResult.deelnemers[1].volgorde).toEqual(2)
+                expect(parsedResult.deelnemers[2].volgorde).toEqual(3)
+            })
         })
 
-        it('should include the uitslagen', () => {
-            expect(parsedResult.uitslagen[0]).toEqual(new UitslagModel(1, '660905', 'Brend Baak', 53.26))
-            expect(parsedResult.uitslagen[1]).toEqual(new UitslagModel(2, '660250', 'Gabriel Emmanuel', 52.04))
-            expect(parsedResult.uitslagen[2]).toEqual(new UitslagModel(3, '658311', 'Hugo Jansen', 51.31))
+        describe('the uitslagen', () => {
+            it('should include all uitslagen', () => {
+                expect(parsedResult.uitslagen.length).toEqual(32)
+            })
+
+            it('should be present', () => {
+                expect(parsedResult.uitslagen[0]).toEqual(new UitslagModel(1, '660905', 'Brend Baak', 53.26))
+                expect(parsedResult.uitslagen[1]).toEqual(new UitslagModel(2, '660250', 'Gabriel Emmanuel', 52.04))
+                expect(parsedResult.uitslagen[2]).toEqual(new UitslagModel(3, '658311', 'Hugo Jansen', 51.31))
+            })
         })
     })
 

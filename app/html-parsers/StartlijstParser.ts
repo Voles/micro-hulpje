@@ -124,6 +124,8 @@ class StartlijstParser {
                     .push(deelnemer);
             });
 
+        theDeelnemers.sort((a, b) => a.volgorde - b.volgorde)
+
         return theDeelnemers
     }
 
