@@ -76,8 +76,6 @@ describe('Startlijst HTML parser', () => {
                         id: '670693',
                         naam: 'Enrique van Velzen',
                         vereniging: 'PAC',
-                        obp: '',
-                        obpSortable: 0,
                         startnummer: '808'
                     })
                 )
@@ -191,8 +189,6 @@ describe('Startlijst HTML parser', () => {
                 volgorde: 1,
                 naam: 'Meike de Graauw',
                 vereniging: 'Prins Hendrik',
-                obp: '',
-                obpSortable: 0,
                 startnummer: undefined
             }))
 

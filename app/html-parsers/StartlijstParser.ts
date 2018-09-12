@@ -95,12 +95,12 @@ class StartlijstParser {
                 const team = $(element).find('td').eq(teamIndex).find('a').first().text().trim();
                 const startnummer = $(element).find('td').eq(startnummerIndex).text().trim();
                 const obpRaw = $(element).find('td').eq(obpIndex).find('span').first().find('span.tipped').first().text();
+                const obp = obpRaw === '---' ? undefined : obpRaw;
                 const tipped = $(element).find('td').eq(obpIndex).find('.tipped').first().attr('title');
                 const datumRegex = /(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}/;
                 const findDate = datumRegex.exec(tipped);
                 const datum = findDate ? findDate[0] : undefined;
 
-                const obp = obpRaw === '---' ? '' : obpRaw;
 
                 const deelnemer = new DeelnemerModel({
                     serie: serie,
@@ -108,10 +108,13 @@ class StartlijstParser {
                     id: deelnemerId,
                     naam: removeDoubleSpaces(naam),
                     vereniging: vereniging,
-                    obp: obp,
-                    obpSortable: obpRawToSortable(obp),
                     datum: datum
                 })
+
+                if (obp) {
+                    deelnemer.obp = obp
+                    deelnemer.obpSortable = obpRawToSortable(obp)
+                }
 
                 if (team) {
                     deelnemer.teamnaam = team

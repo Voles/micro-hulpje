@@ -5,8 +5,8 @@ interface DeelnemerProperties {
     naam: string
     vereniging: string
     teamnaam?: string
-    obp: string
-    obpSortable: number
+    obp?: string
+    obpSortable?: number
     datum?: string
     rang?: number
     leeftijd?: number
