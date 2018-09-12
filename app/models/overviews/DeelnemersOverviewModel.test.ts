@@ -28,74 +28,105 @@ describe('Deelnemers Overview Model', () => {
             })
         })
 
-        describe('when the Datum of the OBP fields is unknown', () => {
-            let model;
+        describe('conditional columns', () => {
+            let model
+            let deelnemer
 
-            beforeAll(() => {
-                const deelnemers = [new DeelnemerModel({
+            beforeEach(() => {
+                deelnemer = new DeelnemerModel({
                     serie: 1,
                     volgorde: 1,
                     naam: 'Niels Dequeker',
                     vereniging: 'AV Haarlem',
                     obp: '10',
                     obpSortable: 10
-                })]
-                model = new DeelnemersOverviewModel('', deelnemers)
+                })
+                model = new DeelnemersOverviewModel('', [deelnemer])
             })
 
-            it('should leave out the Datum column', () => {
-                expect(model.toCsvFormat()).toEqual(
-                    `"#","Naam","Vereniging","OBP","Info"
+            describe('the datum column', () => {
+                it('should not be included in the output when the datum is empty', () => {
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Info"
 1,"Niels Dequeker","AV Haarlem","10",`
-                )
-            })
-        })
+                    )
+                })
 
-        describe('the teamnaam', () => {
-            let model;
-
-            beforeAll(() => {
-                const deelnemers = [new DeelnemerModel({
-                    serie: 1,
-                    volgorde: 1,
-                    naam: 'Niels Dequeker',
-                    vereniging: 'AV Haarlem',
-                    teamnaam: 'Haarlemse Hardloopgoden',
-                    obp: '10',
-                    obpSortable: 10
-                })]
-                model = new DeelnemersOverviewModel('', deelnemers)
+                it('should be included in the output when the datum is set', () => {
+                    deelnemer.datum = '01-01-2018'
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Datum","Info"
+1,"Niels Dequeker","AV Haarlem","10","01-01-2018",`
+                    )
+                })
             })
 
-            it('should NOT be included', () => {
-                expect(model.toCsvFormat()).toEqual(
-                    `"#","Naam","Vereniging","OBP","Info"
+            describe('the team column', () => {
+                it('should not be included in the output when the datum is empty', () => {
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Info"
 1,"Niels Dequeker","AV Haarlem","10",`
-                )
-            })
-        })
+                    )
+                })
 
-        describe('when a startnummer is present', () => {
-            let model;
-
-            beforeAll(() => {
-                const deelnemers = [new DeelnemerModel({
-                    serie: 1,
-                    volgorde: 1,
-                    naam: 'Niels Dequeker',
-                    vereniging: 'AV Haarlem',
-                    obp: '10',
-                    obpSortable: 10,
-                    startnummer: '007'
-                })]
-                model = new DeelnemersOverviewModel('', deelnemers)
+                it('should not included in the output when the datum is set', () => {
+                    deelnemer.teamnaam = 'Haarlemse Hardloopgoden'
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Info"
+1,"Niels Dequeker","AV Haarlem","10",`
+                    )
+                })
             })
 
-            it('should include the startnummer', () => {
-                expect(model.toCsvFormat()).toEqual(
-                    `"#","Snr","Naam","Vereniging","OBP","Info"
+            describe('the Snr column', () => {
+                it('should not be included in the output when the datum is empty', () => {
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Info"
+1,"Niels Dequeker","AV Haarlem","10",`
+                    )
+                })
+
+                it('should not included in the output when the datum is set', () => {
+                    deelnemer.startnummer = '007'
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Snr","Naam","Vereniging","OBP","Info"
 1,"007","Niels Dequeker","AV Haarlem","10",`
-                )
+                    )
+                })
+            })
+
+            describe('the Leeftijd column', () => {
+                it('should not be included in the output when the leeftijd is not set', () => {
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Info"
+1,"Niels Dequeker","AV Haarlem","10",`
+                    )
+                })
+
+                it('should be included in the output when the leeftijd is set', () => {
+                    deelnemer.leeftijd = 18
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Leeftijd","Info"
+1,"Niels Dequeker","AV Haarlem","10",18,`
+                    )
+                })
+            })
+
+            describe('the Rang column', () => {
+                it('should not be included in the output when the rang is not set', () => {
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Info"
+1,"Niels Dequeker","AV Haarlem","10",`
+                    )
+                })
+
+                it('should be included in the output when the rang is set', () => {
+                    deelnemer.rang = 1
+                    expect(model.toCsvFormat()).toEqual(
+                        `"#","Naam","Vereniging","OBP","Rang","Info"
+1,"Niels Dequeker","AV Haarlem","10",1,`
+                    )
+                })
             })
         })
     })
