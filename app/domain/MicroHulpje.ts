@@ -1,4 +1,4 @@
-import DeelnemersOverviewGenerator from "../overviews/DeelnemersOverviewGenerator";
+import DeelnemersOverviewGenerator from "../overview-generators/DeelnemersOverviewGenerator";
 import DeelnemersOverviewModel from "../models/overviews/DeelnemersOverviewModel";
 import IWriter from "../writers/IWriter";
 import IOverviewModel from "../models/overviews/IOverviewModel";

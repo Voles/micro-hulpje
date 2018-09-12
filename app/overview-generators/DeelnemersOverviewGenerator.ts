@@ -5,9 +5,9 @@ import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
 import AtleetService from "../services/AtleetService";
 import StartlijstService from "../services/StartlijstService";
 import RanglijstService from "../services/RanglijstService";
-import {obpRawToSortable} from "../utils/strings";
 import StartlijstModel from "../models/StartlijstModel";
 import RanglijstCategorien from "../constants/RanglijstCategorien";
+import PersoonlijkRecord from "../models/PersoonlijkRecordModel";
 
 class DeelnemersOverviewGenerator {
     private startlijstService: StartlijstService = new StartlijstService()
@@ -135,9 +135,13 @@ class DeelnemersOverviewGenerator {
                     newDeelnemer :
                     this
                         .getDeelnemerObpFromPR(onderdeel, deelnemer)
-                        .then(obpFromPR => {
-                            newDeelnemer.obp = obpFromPR.obp
-                            newDeelnemer.obpSortable = obpFromPR.obpSortable
+                        .then(persoonlijkRecord => {
+                            if (persoonlijkRecord) {
+                                newDeelnemer.obp = persoonlijkRecord.prestatie
+                                newDeelnemer.obpSortable = persoonlijkRecord.prestatieSortable
+                                newDeelnemer.datum = persoonlijkRecord.datum
+                            }
+
                             return newDeelnemer
                         })
             })
@@ -145,20 +149,13 @@ class DeelnemersOverviewGenerator {
         return Promise.all(deelnemersWithObpFrmoPRs)
     }
 
-    private getDeelnemerObpFromPR(onderdeel: Onderdeel, deelnemer: DeelnemerModel): Promise<{ obp: string, obpSortable: number }> {
+    private getDeelnemerObpFromPR(onderdeel: Onderdeel, deelnemer: DeelnemerModel): Promise<PersoonlijkRecord> {
         const atleetUrl = `https://www.atletiek.nu/atleet/main/${deelnemer.id}/`;
 
         return this
             .atleetService
             .fromUrl(atleetUrl)
-            .then(atleet => {
-                const persoonlijkRecord = atleet.persoonlijkeRecords[onderdeel]
-
-                return {
-                    obp: persoonlijkRecord,
-                    obpSortable: persoonlijkRecord ? obpRawToSortable(persoonlijkRecord) : undefined
-                }
-            })
+            .then(atleet => atleet.persoonlijkeRecords[onderdeel])
     }
 
     private hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Array<DeelnemerModel> {

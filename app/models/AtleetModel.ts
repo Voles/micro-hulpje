@@ -1,9 +1,7 @@
-import PersoonlijkeRecords from "./PersoonlijkeRecordsModel";
-
 class AtleetModel {
-    public persoonlijkeRecords: PersoonlijkeRecords
+    public persoonlijkeRecords: object
 
-    constructor(persoonlijkeRecords: PersoonlijkeRecords) {
+    constructor(persoonlijkeRecords: object) {
         this.persoonlijkeRecords = persoonlijkeRecords
     }
 }
