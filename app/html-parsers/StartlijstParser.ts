@@ -10,13 +10,13 @@ class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
         const $ = cheerio.load(html)
 
-        return Promise.resolve(new StartlijstModel(
-            this.parseWedstrijdnaam($),
-            this.parseTitel($),
-            this.parseStarttijd($),
-            this.parseDeelnemers($),
-            this.parseUitslagen($)
-        ))
+        return Promise.resolve(new StartlijstModel({
+            wedstrijdNaam: this.parseWedstrijdnaam($),
+            titel: this.parseTitel($),
+            starttijd: this.parseStarttijd($),
+            deelnemers: this.parseDeelnemers($),
+            uitslagen: this.parseUitslagen($)
+        }))
     }
 
     parseWedstrijdnaam($: CheerioStatic): string {
