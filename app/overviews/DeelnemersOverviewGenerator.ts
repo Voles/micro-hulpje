@@ -25,8 +25,11 @@ class DeelnemersOverviewGenerator {
                 }
 
                 return this
-                    .hydrateDeelnemersObpFromPersoonlijkeRecords(startlijst.onderdeel, startlijst.deelnemers)
-                    .then(() => startlijst)
+                    .getDeelnemersObpFromPR(startlijst.onderdeel, startlijst.deelnemers)
+                    .then(hydratedDeelnemers => {
+                        startlijst.deelnemers = hydratedDeelnemers
+                        return startlijst
+                    })
             })
             .then(startlijst => {
                 if (
@@ -123,17 +126,26 @@ class DeelnemersOverviewGenerator {
             })
     }
 
-    private hydrateDeelnemersObpFromPersoonlijkeRecords(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
-        const hydratedDeelnemers = deelnemers
-            .filter(deelnemer => deelnemer.obp === '' && onderdeel)
-            .map(deelnemer => this.hydrateDeelnemerObpFromPersoonlijkeRecords(onderdeel, deelnemer));
+    private getDeelnemersObpFromPR(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
+        const deelnemersWithObpFrmoPRs = deelnemers
+            .map(deelnemer => {
+                const newDeelnemer = deelnemer.clone()
 
-        return Promise
-            .all(hydratedDeelnemers)
-            .then(() => deelnemers)
+                return newDeelnemer.obp !== undefined ?
+                    newDeelnemer :
+                    this
+                        .getDeelnemerObpFromPR(onderdeel, deelnemer)
+                        .then(obpFromPR => {
+                            newDeelnemer.obp = obpFromPR.obp
+                            newDeelnemer.obpSortable = obpFromPR.obpSortable
+                            return newDeelnemer
+                        })
+            })
+
+        return Promise.all(deelnemersWithObpFrmoPRs)
     }
 
-    private hydrateDeelnemerObpFromPersoonlijkeRecords(onderdeel: Onderdeel, deelnemer: DeelnemerModel) {
+    private getDeelnemerObpFromPR(onderdeel: Onderdeel, deelnemer: DeelnemerModel): Promise<{ obp: string, obpSortable: number }> {
         const atleetUrl = `https://www.atletiek.nu/atleet/main/${deelnemer.id}/`;
 
         return this
@@ -142,12 +154,10 @@ class DeelnemersOverviewGenerator {
             .then(atleet => {
                 const persoonlijkRecord = atleet.persoonlijkeRecords[onderdeel]
 
-                if (persoonlijkRecord) {
-                    deelnemer.obp = persoonlijkRecord
-                    deelnemer.obpSortable = obpRawToSortable(persoonlijkRecord)
+                return {
+                    obp: persoonlijkRecord,
+                    obpSortable: persoonlijkRecord ? obpRawToSortable(persoonlijkRecord) : undefined
                 }
-
-                return deelnemer
             })
     }
 

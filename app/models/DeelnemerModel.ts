@@ -49,6 +49,10 @@ class DeelnemerModel {
         this.positie = properties.positie
         this.prestatie = properties.prestatie
     }
+
+    clone(): DeelnemerModel {
+        return new DeelnemerModel(this)
+    }
 }
 
 export default DeelnemerModel
