@@ -21,17 +21,10 @@ debug('Start 🎬')
  * Code om alle startlijsten voor een wedstrijd te genereren
  */
 
-// Junioren C/D Finale
-// const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24713/'
-const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/18843/'
+// Finale Pupillencompetitie regio 1-3-4
+const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24937/'
 
-const linksVergelijkingsWedstrijden = [
-    // 51e Nationale C-spelen
-    'https://www.atletiek.nu/wedstrijd/chronoloog/16878/',
-
-    // Nationale D-spelen
-    'https://www.atletiek.nu/wedstrijd/chronoloog/19921/'
-]
+const linksVergelijkingsWedstrijden = []
 
 wedstrijdTijdsschemasService
     .fromUrl(linkTijdsschema)
