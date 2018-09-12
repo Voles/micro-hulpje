@@ -11,7 +11,7 @@ class ResultaatModel {
     public atleet: string
     public geboortedatum: Date
 
-    constructor(properties: ResultaatProperties = {}) {
+    constructor(properties: ResultaatProperties) {
         this.positie = properties.positie
         this.prestatie = properties.prestatie
         this.atleet = properties.atleet

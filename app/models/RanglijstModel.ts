@@ -13,7 +13,7 @@ class RanglijstModel {
     public onderdeel: string;
     public resultaten: Array<ResultaatModel>;
 
-    constructor(properties: RanglijstProperties = {}) {
+    constructor(properties: RanglijstProperties) {
         this.seizoen = properties.seizoen
         this.categorie = properties.categorie
         this.onderdeel = properties.onderdeel

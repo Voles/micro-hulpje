@@ -9,7 +9,7 @@ class WedstrijdTijdsschemaModel {
     public startlijstLinks: Array<string>
     public uitslagenLinks: Array<string>
 
-    constructor(properties: WedstrijdTijdsschemaProperties = {}) {
+    constructor(properties: WedstrijdTijdsschemaProperties) {
         this.titel = properties.titel || ''
         this.startlijstLinks = properties.startlijstLinks || []
         this.uitslagenLinks = properties.uitslagenLinks || []
