@@ -1,7 +1,7 @@
 interface WedstrijdTijdsschemaProperties {
-    public titel: string
-    public startlijstLinks: Array<string>
-    public uitslagenLinks: Array<string>
+    titel: string
+    startlijstLinks: Array<string>
+    uitslagenLinks: Array<string>
 }
 
 class WedstrijdTijdsschemaModel {
