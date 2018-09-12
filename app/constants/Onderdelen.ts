@@ -15,8 +15,10 @@ enum Onderdeel {
     Kogelslingeren3Kg = 'Kogelslingeren 3 kilogram',
     Kogelslingeren4Kg = 'Kogelslingeren 4 kilogram',
 
+    Lopen40M = '40 meter',
     Lopen60M = '60 meter',
     Lopen80M = '80 meter',
+    Lopen100M = '100 meter',
     Lopen150M = '150 meter',
     Lopen300M = '300 meter',
     Lopen600M = '600 meter',

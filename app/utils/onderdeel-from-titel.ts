@@ -25,8 +25,10 @@ export default function detectOnderdeelFromStartlijstTitel(titel: string) : Onde
         Onderdeel.Horden100M,
         Onderdeel.Horden300MHoogte76Cm,
 
+        Onderdeel.Lopen40M,
         Onderdeel.Lopen60M,
         Onderdeel.Lopen80M,
+        Onderdeel.Lopen100M,
         Onderdeel.Lopen150M,
         Onderdeel.Lopen300M,
         Onderdeel.Lopen600M,
