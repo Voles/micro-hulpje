@@ -72,12 +72,12 @@ class RanglijstParser {
                 const geboortedatumRaw = $(element).find('td').eq(geboortedatumIndex).find('span.sortData').first().attr('data');
 
                 theResultaten
-                    .push(new ResultaatModel(
-                        Number(positie),
-                        prestatie,
-                        removeDoubleSpaces(atleet),
-                        RanglijstParser.parseRawGeboortedatum(geboortedatumRaw)
-                    ));
+                    .push(new ResultaatModel({
+                        positie: Number(positie),
+                        prestatie: prestatie,
+                        atleet: removeDoubleSpaces(atleet),
+                        geboortedatum: RanglijstParser.parseRawGeboortedatum(geboortedatumRaw)
+                    }));
             });
 
         return theResultaten

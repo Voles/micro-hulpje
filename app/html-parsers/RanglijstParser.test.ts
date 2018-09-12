@@ -40,12 +40,12 @@ describe('Ranglijst HTML parser', () => {
             describe('the first resultaat', () => {
                 it('should contain the details of the resultaat', () => {
                     expect(parsedResult.resultaten[0]).toEqual(
-                        new ResultaatModel(
-                            1,
-                            '11,01',
-                            'Nsikak Ekpo',
-                            new Date(2003, 3, 14)
-                        )
+                        new ResultaatModel({
+                            positie: 1,
+                            prestatie: '11,01',
+                            atleet: 'Nsikak Ekpo',
+                            geboortedatum: new Date(2003, 3, 14)
+                        })
                     )
                 })
             })

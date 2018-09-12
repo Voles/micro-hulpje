@@ -1,14 +1,21 @@
+interface ResultaatProperties {
+    positie: number
+    prestatie: string
+    atleet: string
+    geboortedatum: Date
+}
+
 class ResultaatModel {
     public positie: number
     public prestatie: string
     public atleet: string
     public geboortedatum: Date
 
-    constructor(positie: number, prestatie: string, atleet: string, geboortedatum: Date) {
-        this.positie = positie
-        this.prestatie = prestatie
-        this.atleet = atleet
-        this.geboortedatum = geboortedatum
+    constructor(properties: ResultaatProperties = {}) {
+        this.positie = properties.positie
+        this.prestatie = properties.prestatie
+        this.atleet = properties.atleet
+        this.geboortedatum = properties.geboortedatum
     }
 }
 
