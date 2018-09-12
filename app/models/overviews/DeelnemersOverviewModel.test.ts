@@ -3,7 +3,7 @@ import DeelnemerModel from "../DeelnemerModel";
 
 describe('Deelnemers Overview Model', () => {
     describe('formatting as CSV', () => {
-        describe('with one participant', () => {
+        describe('with one deelnemer', () => {
             let model;
 
             beforeAll(() => {
@@ -20,7 +20,7 @@ describe('Deelnemers Overview Model', () => {
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
-            it('should work', () => {
+            it('should output the deelnemer', () => {
                 expect(model.toCsvFormat()).toEqual(
                     `"#","Naam","Vereniging","OBP","Datum","Info"
 1,"Niels Dequeker","AV Haarlem","10","22-05-2018",`
@@ -51,7 +51,7 @@ describe('Deelnemers Overview Model', () => {
             })
         })
 
-        describe('when a teamnaam is present', () => {
+        describe('the teamnaam', () => {
             let model;
 
             beforeAll(() => {
@@ -67,7 +67,7 @@ describe('Deelnemers Overview Model', () => {
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
-            it('should NOT include the teamnaam', () => {
+            it('should NOT be included', () => {
                 expect(model.toCsvFormat()).toEqual(
                     `"#","Naam","Vereniging","OBP","Info"
 1,"Niels Dequeker","AV Haarlem","10",`
@@ -91,7 +91,7 @@ describe('Deelnemers Overview Model', () => {
                 model = new DeelnemersOverviewModel('', deelnemers)
             })
 
-            it('should include the startnummers', () => {
+            it('should include the startnummer', () => {
                 expect(model.toCsvFormat()).toEqual(
                     `"#","Snr","Naam","Vereniging","OBP","Info"
 1,"007","Niels Dequeker","AV Haarlem","10",`
