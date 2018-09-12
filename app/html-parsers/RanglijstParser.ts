@@ -7,12 +7,12 @@ class RanglijstParser {
     parse(html: string): Promise<RanglijstModel> {
         const $ = cheerio.load(html)
 
-        return Promise.resolve(new RanglijstModel(
-            this.parseSeizoen($),
-            this.parseCategorie($),
-            this.parseOnderdeel($),
-            this.parseResultaten($)
-        ))
+        return Promise.resolve(new RanglijstModel({
+            seizoen: this.parseSeizoen($),
+            categorie: this.parseCategorie($),
+            onderdeel: this.parseOnderdeel($),
+            resultaten: this.parseResultaten($)
+        }))
     }
 
     parseSeizoen($: CheerioStatic): string {
