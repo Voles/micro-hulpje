@@ -22,8 +22,8 @@ debug('Start 🎬')
  */
 
 // Junioren C/D Finale
-const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24713/'
-// const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/18843/'
+// const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24713/'
+const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/18843/'
 
 const linksVergelijkingsWedstrijden = [
     // 51e Nationale C-spelen

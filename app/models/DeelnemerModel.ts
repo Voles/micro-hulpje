@@ -1,9 +1,9 @@
 interface DeelnemerProperties {
     serie: number
     volgorde: number
-    id?: string
     naam: string
     vereniging: string
+    id?: string
     teamnaam?: string
     obp?: string
     obpSortable?: number
@@ -11,6 +11,8 @@ interface DeelnemerProperties {
     rang?: number
     leeftijd?: number
     startnummer?: string
+    positie?: number
+    prestatie?: number
 }
 
 class DeelnemerModel {
@@ -28,6 +30,8 @@ class DeelnemerModel {
     public besteInSerie: boolean = false
     public positieVergelijkingsWedstrijd: string
     public startnummer: string
+    public positie: number
+    public prestatie: number
 
     constructor(properties: DeelnemerProperties) {
         this.serie = properties.serie
@@ -42,6 +46,8 @@ class DeelnemerModel {
         this.rang = properties.rang
         this.leeftijd = properties.leeftijd
         this.startnummer = properties.startnummer
+        this.positie = properties.positie
+        this.prestatie = properties.prestatie
     }
 }
 

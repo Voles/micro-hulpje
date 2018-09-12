@@ -3,10 +3,8 @@ import startlijstHtml from './StartlijstParserHtml';
 import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam';
 import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
 import startlijstParserHtmlMetTeams from './StartlijstParserHtmlMetTeams';
-import startlijstParserHtmlMetUitslagen from './StartlijstParserHtmlMetUitslagen';
 import startlijstParserHtmlZonderStartnummers from './StartlijstParserHtmlZonderStartnummers';
 import DeelnemerModel from "../models/DeelnemerModel";
-import UitslagModel from "../models/UitslagModel";
 
 describe('Startlijst HTML parser', () => {
     let startlijstParser;
@@ -51,7 +49,9 @@ describe('Startlijst HTML parser', () => {
                         obp: '14,10',
                         obpSortable: 14.1,
                         datum: '10-05-2018',
-                        startnummer: '733'
+                        startnummer: '733',
+                        positie: 1,
+                        prestatie: 13.72
                     })
                 );
 
@@ -65,7 +65,9 @@ describe('Startlijst HTML parser', () => {
                         obp: '14,80',
                         obpSortable: 14.8,
                         datum: '08-06-2018',
-                        startnummer: '789'
+                        startnummer: '789',
+                        positie: 2,
+                        prestatie: 14.8
                     })
                 )
 
@@ -76,7 +78,9 @@ describe('Startlijst HTML parser', () => {
                         id: '670693',
                         naam: 'Enrique van Velzen',
                         vereniging: 'PAC',
-                        startnummer: '808'
+                        startnummer: '808',
+                        positie: 3,
+                        prestatie: 16.29
                     })
                 )
             })
@@ -136,36 +140,6 @@ describe('Startlijst HTML parser', () => {
             expect(parsedResult.deelnemers.map(deelnemer => deelnemer.teamnaam)).toEqual([
                 'Hellas Utrecht JD Team 1', 'Hellas Utrecht JD Team 1', 'AV Sparta JD Team 1', 'GAC Hilversum JD Team 1', 'AV Sprint JD Team 1', 'Hellas Utrecht JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'Altis JD Team 1', 'Altis JD Team 1', 'Haag Atletiek JD Team 1', 'Haag Atletiek JD Team 1', 'AV De Spartaan JD Team 1', 'ARV Ilion JD', 'GAC Hilversum JD Team 1', 'Altis JD Team 1', 'GAC Hilversum JD Team 1', 'Prins Hendrik JD Team 1', 'AV De Spartaan JD Team 1', 'Groningen Atletiek JD Team 1', 'AV Sparta JD Team 1', 'AV Sparta JD Team 1', 'Prins Hendrik JD Team 1', 'Prins Hendrik JD Team 1', 'AV Sprint JD Team 1', 'Groningen Atletiek JD Team 1', 'ARV Ilion JD', 'ARV Ilion JD', 'Haag Atletiek JD Team 1', 'AV Sprint JD Team 1'
             ])
-        })
-    })
-
-    describe('parsing a Startlijst met uitslagen', () => {
-        beforeAll(() =>
-            startlijstParser
-                .parse(startlijstParserHtmlMetUitslagen)
-                .then(result => {
-                    parsedResult = result
-                })
-        )
-
-        describe('the deelnemers', () => {
-            it('should be ordered ascending by volgorde', () => {
-                expect(parsedResult.deelnemers[0].volgorde).toEqual(1)
-                expect(parsedResult.deelnemers[1].volgorde).toEqual(2)
-                expect(parsedResult.deelnemers[2].volgorde).toEqual(3)
-            })
-        })
-
-        describe('the uitslagen', () => {
-            it('should include all uitslagen', () => {
-                expect(parsedResult.uitslagen.length).toEqual(32)
-            })
-
-            it('should be present', () => {
-                expect(parsedResult.uitslagen[0]).toEqual(new UitslagModel(1, '660905', 'Brend Baak', 53.26))
-                expect(parsedResult.uitslagen[1]).toEqual(new UitslagModel(2, '660250', 'Gabriel Emmanuel', 52.04))
-                expect(parsedResult.uitslagen[2]).toEqual(new UitslagModel(3, '658311', 'Hugo Jansen', 51.31))
-            })
         })
     })
 

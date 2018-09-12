@@ -3,20 +3,29 @@ import StartlijstModel from '../models/StartlijstModel';
 import DeelnemerModel from "../models/DeelnemerModel";
 import {obpRawToSortable, removeDoubleSpaces} from "../utils/strings";
 import detectOnderdeelFromStartlijstTitel from "../utils/onderdeel-from-titel";
-import UitslagModel from "../models/UitslagModel";
 import sortBy from 'lodash/sortBy'
+import Onderdeel from "../constants/Onderdelen";
 
 class StartlijstParser {
     parse(html: string): Promise<StartlijstModel> {
         const $ = cheerio.load(html)
 
-        return Promise.resolve(new StartlijstModel({
+        const titel = this.parseTitel($)
+        const onderdeel = detectOnderdeelFromStartlijstTitel(titel)
+
+        const startlijstModel = new StartlijstModel({
             wedstrijdNaam: this.parseWedstrijdnaam($),
-            titel: this.parseTitel($),
+            titel: titel,
+            onderdeel: onderdeel,
             starttijd: this.parseStarttijd($),
-            deelnemers: this.parseDeelnemers($),
-            uitslagen: this.parseUitslagen($)
-        }))
+            deelnemers: this.parseDeelnemers($)
+        })
+
+        const uitslagen = this.parseUitslagen($, onderdeel)
+
+        this.assignUitslagenToDeelnemers(startlijstModel.deelnemers, uitslagen)
+
+        return Promise.resolve(startlijstModel)
     }
 
     parseWedstrijdnaam($: CheerioStatic): string {
@@ -131,12 +140,9 @@ class StartlijstParser {
         return sortBy(theDeelnemers, ['serie', 'volgorde'])
     }
 
-    parseUitslagen($: CheerioStatic): Array<UitslagModel> {
+    parseUitslagen($: CheerioStatic, onderdeel: Onderdeel): Array<{ naam: string, positie: number, prestatie: number }> {
         const tabel = $('#uitslagenContainer .deelnemerstabel').first();
         const uitslagen = tabel.find('tbody tr');
-
-        const titel = this.parseTitel($)
-        const onderdeel = detectOnderdeelFromStartlijstTitel(titel)
 
         let positieIndex;
         let naamIndex;
@@ -165,20 +171,30 @@ class StartlijstParser {
         uitslagen
             .each(function (i, element) {
                 const positie = $(element).find('td').eq(positieIndex).text();
-                const deelnemerId = $(element).attr('data-deelnemer_id');
                 const naam = $(element).find('td').eq(naamIndex).find('span.hidden-xs').first().text();
                 const prestatieRaw = $(element).find('td').eq(prestatieIndex).find('span.tipped').first().text();
 
+
                 theUitslagen
-                    .push(new UitslagModel(
-                        Number(positie),
-                        deelnemerId,
-                        removeDoubleSpaces(naam),
-                        obpRawToSortable(prestatieRaw)
-                    ))
+                    .push({
+                        naam: removeDoubleSpaces(naam),
+                        positie: Number(positie),
+                        prestatie: obpRawToSortable(prestatieRaw)
+                    })
             })
 
         return theUitslagen
+    }
+
+    private assignUitslagenToDeelnemers(deelnemers: Array<DeelnemerModel>, uitslagen: Array<{ naam: string, positie: number, prestatie: number }>): void {
+        uitslagen.forEach(uitslag => {
+            const deelnemer = deelnemers.find(deelnemer => deelnemer.naam === uitslag.naam)
+
+            if (deelnemer) {
+                deelnemer.positie = uitslag.positie
+                deelnemer.prestatie = uitslag.prestatie
+            }
+        })
     }
 
 }

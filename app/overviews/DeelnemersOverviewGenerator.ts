@@ -80,15 +80,15 @@ class DeelnemersOverviewGenerator {
                     startlijst
                         .deelnemers
                         .forEach(deelnemer => {
-                            const vorigeUitslagVoorDeelnemer = startlijstVorigeWedstrijd
-                                .uitslagen
-                                .find(uitslag => uitslag.naam === deelnemer.naam)
+                            const deelnemersVorigeWedstrijd = startlijstVorigeWedstrijd.deelnemers
+                            const deelnemerResultatenVorigeWedstrijd = deelnemersVorigeWedstrijd
+                                .find(deelnemerVorigeWedstrijd => deelnemerVorigeWedstrijd.naam === deelnemer.naam)
 
-                            if (vorigeUitslagVoorDeelnemer && vorigeUitslagVoorDeelnemer.positie <= 3 && vorigeUitslagVoorDeelnemer.positie > 0) {
+                            if (deelnemerResultatenVorigeWedstrijd && deelnemerResultatenVorigeWedstrijd.positie <= 3 && deelnemerResultatenVorigeWedstrijd.positie > 0) {
                                 deelnemer.positieVergelijkingsWedstrijd =
                                     deelnemer.positieVergelijkingsWedstrijd ?
-                                        `${deelnemer.positieVergelijkingsWedstrijd}, ${startlijstVorigeWedstrijd.wedstrijdNaam}: ${vorigeUitslagVoorDeelnemer.positie}e` :
-                                        `${startlijstVorigeWedstrijd.wedstrijdNaam}: ${vorigeUitslagVoorDeelnemer.positie}e`
+                                        `${deelnemer.positieVergelijkingsWedstrijd}, ${startlijstVorigeWedstrijd.wedstrijdNaam}: ${deelnemerResultatenVorigeWedstrijd.positie}e` :
+                                        `${startlijstVorigeWedstrijd.wedstrijdNaam}: ${deelnemerResultatenVorigeWedstrijd.positie}e`
                             }
                         })
                 }

@@ -1,5 +1,4 @@
 import DeelnemerModel from "./DeelnemerModel";
-import UitslagModel from "./UitslagModel";
 import detectOnderdeelFromStartlijstTitel from "../utils/onderdeel-from-titel";
 import Onderdeel from "../constants/Onderdelen";
 import RanglijstCategorien from "../constants/RanglijstCategorien";
@@ -8,10 +7,9 @@ interface StartlijstProperties {
     wedstrijdNaam: string
     titel: string
     starttijd: string
-    onderdeel: Onderdeel
-    categorie: RanglijstCategorien
+    onderdeel?: Onderdeel
+    categorie?: RanglijstCategorien
     deelnemers: Array<DeelnemerModel>
-    uitslagen: Array<UitslagModel>
 }
 
 class StartlijstModel {
@@ -21,14 +19,12 @@ class StartlijstModel {
     public onderdeel: Onderdeel
     public categorie: RanglijstCategorien
     public deelnemers: Array<DeelnemerModel>
-    public uitslagen: Array<UitslagModel>
 
-    constructor(properties: StartlijstProperties = {}) {
+    constructor(properties: StartlijstProperties = { wedstrijdNaam: '', titel: '', starttijd: '', deelnemers: [] }) {
         this.wedstrijdNaam = properties.wedstrijdNaam
         this.titel = properties.titel
         this.starttijd = properties.starttijd
         this.deelnemers = properties.deelnemers
-        this.uitslagen = properties.uitslagen
 
         this.onderdeel = detectOnderdeelFromStartlijstTitel(this.titel)
         this.categorie = this.detectRanglijstCategorieFromStartlijstTitel(this.titel)
