@@ -1,12 +1,18 @@
+interface WedstrijdTijdsschemaProperties {
+    public titel: string
+    public startlijstLinks: Array<string>
+    public uitslagenLinks: Array<string>
+}
+
 class WedstrijdTijdsschemaModel {
     public titel: string
     public startlijstLinks: Array<string>
     public uitslagenLinks: Array<string>
 
-    constructor(titel: string, startlijstLinks: Array<string>, uitslagenLinks: Array<string>) {
-        this.titel = titel
-        this.startlijstLinks = startlijstLinks
-        this.uitslagenLinks = uitslagenLinks
+    constructor(properties: WedstrijdTijdsschemaProperties = {}) {
+        this.titel = properties.titel || ''
+        this.startlijstLinks = properties.startlijstLinks || []
+        this.uitslagenLinks = properties.uitslagenLinks || []
     }
 }
 

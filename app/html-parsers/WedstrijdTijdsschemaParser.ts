@@ -5,11 +5,11 @@ class WedstrijdTijdsschemaParser {
     parse(html: string): Promise<WedstrijdTijdsschemaModel> {
         const $ = cheerio.load(html)
 
-        return Promise.resolve(new WedstrijdTijdsschemaModel(
-            this.parseTitel($),
-            this.parseStartlijstLinks($),
-            this.parseUitslagenLinks($)
-        ))
+        return Promise.resolve(new WedstrijdTijdsschemaModel({
+            titel: this.parseTitel($),
+            startlijstLinks: this.parseStartlijstLinks($),
+            uitslagenLinks: this.parseUitslagenLinks($)
+        }))
     }
 
     parseTitel($: CheerioStatic): string {
