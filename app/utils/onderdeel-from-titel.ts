@@ -2,6 +2,7 @@ import Onderdeel from "../constants/Onderdelen";
 
 export default function detectOnderdeelFromStartlijstTitel(titel: string) : Onderdeel {
     const onderdelen = [
+        Onderdeel.Balwerpen,
         Onderdeel.Hoogspringen,
         Onderdeel.Verspringen,
 

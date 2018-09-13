@@ -1,4 +1,5 @@
 enum Onderdeel {
+    Balwerpen = 'Balwerpen',
     Hoogspringen = 'Hoogspringen',
     Verspringen = 'Verspringen',
 
@@ -42,6 +43,7 @@ enum Onderdeel {
 }
 
 export const hoogsteGetalWint: Array<Onderdeel> = [
+    Onderdeel.Balwerpen,
     Onderdeel.Hoogspringen,
     Onderdeel.Verspringen,
     Onderdeel.Kogelstoten,
