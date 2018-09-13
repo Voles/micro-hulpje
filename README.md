@@ -24,4 +24,4 @@ $ npm run build
 $ npm start
 ```
 
-De uitvoer staat in het mapje 'micro-hulpje/output'
+De uitvoer staat in de map 'micro-hulpje/output'
