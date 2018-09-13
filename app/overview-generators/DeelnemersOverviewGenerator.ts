@@ -138,7 +138,6 @@ class DeelnemersOverviewGenerator {
                         .then(persoonlijkRecord => {
                             if (persoonlijkRecord) {
                                 newDeelnemer.obp = persoonlijkRecord.prestatie
-                                newDeelnemer.obpSortable = persoonlijkRecord.prestatieSortable
                                 newDeelnemer.datum = persoonlijkRecord.datum
                             }
 

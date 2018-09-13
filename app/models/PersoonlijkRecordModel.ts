@@ -1,5 +1,3 @@
-import {obpRawToSortable} from "../utils/strings";
-
 interface PersoonlijkRecordProperties {
     onderdeel: string
     prestatie: string
@@ -12,13 +10,11 @@ class PersoonlijkRecord {
     public onderdeel: string
 
     public prestatie: string
-    public prestatieSortable: number
     public datum: string
 
     constructor(properties: PersoonlijkRecordProperties) {
         this.onderdeel = properties.onderdeel
         this.prestatie = properties.prestatie
-        this.prestatieSortable = properties.prestatie ? obpRawToSortable(properties.prestatie) : undefined
         this.datum = properties.datum
     }
 }
