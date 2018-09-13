@@ -110,7 +110,6 @@ class StartlijstParser {
                 const findDate = datumRegex.exec(tipped);
                 const datum = findDate ? findDate[0] : undefined;
 
-
                 const deelnemer = new DeelnemerModel({
                     serie: serie,
                     volgorde: Number(volgorde),
@@ -122,7 +121,6 @@ class StartlijstParser {
 
                 if (obp) {
                     deelnemer.obp = obp
-                    deelnemer.obpSortable = obpRawToSortable(obp)
                 }
 
                 if (team) {

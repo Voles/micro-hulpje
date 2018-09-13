@@ -1,3 +1,5 @@
+import {obpRawToSortable} from "../utils/strings";
+
 interface DeelnemerProperties {
     serie: number
     volgorde: number
@@ -22,7 +24,6 @@ class DeelnemerModel {
     public naam: string
     public vereniging: string
     public teamnaam: string
-    public obp: string
     public obpSortable: number
     public datum: string
     public rang: number
@@ -32,6 +33,7 @@ class DeelnemerModel {
     public startnummer: string
     public positie: number
     public prestatie: number
+    private _obp: string
 
     constructor(properties: DeelnemerProperties) {
         this.serie = properties.serie
@@ -40,7 +42,6 @@ class DeelnemerModel {
         this.naam = properties.naam
         this.vereniging = properties.vereniging
         this.teamnaam = properties.teamnaam
-        this.obp = properties.obp
         this.obpSortable = properties.obpSortable
         this.datum = properties.datum
         this.rang = properties.rang
@@ -48,6 +49,19 @@ class DeelnemerModel {
         this.startnummer = properties.startnummer
         this.positie = properties.positie
         this.prestatie = properties.prestatie
+
+        if (properties.obp) {
+            this.obp = properties.obp
+        }
+    }
+
+    set obp(value) {
+        this._obp = value
+        this.obpSortable = obpRawToSortable(value)
+    }
+
+    get obp(): string {
+        return this._obp
     }
 
     clone(): DeelnemerModel {

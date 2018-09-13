@@ -158,24 +158,36 @@ class DeelnemersOverviewGenerator {
             .then(atleet => atleet.persoonlijkeRecords[onderdeel])
     }
 
-    private hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Array<DeelnemerModel> {
-        const theHash = {}
+    orderDeelnemersByObp(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Array<DeelnemerModel> {
+        const result = deelnemers
+            .concat([])
+            .sort((deelnemerA, deelnemerB) => deelnemerA.obpSortable - deelnemerB.obpSortable)
+
+        return hoogsteGetalWint.indexOf(onderdeel) > -1 ?
+            result.reverse() :
+            result
+    }
+
+    groupDeelnemersBySerie(deelnemers: Array<DeelnemerModel>): object {
+        const result = {}
 
         deelnemers.forEach(deelnemer => {
-            theHash[deelnemer.serie] = theHash[deelnemer.serie] || []
-            theHash[deelnemer.serie].push(deelnemer)
+            result[deelnemer.serie] = result[deelnemer.serie] || []
+            result[deelnemer.serie].push(deelnemer)
         })
 
+        return result
+    }
+
+    hydrateDeelnemerInfoWithMedalForBestOBPPerSerie(onderdeel: Onderdeel, deelnemers: Array<DeelnemerModel>): Array<DeelnemerModel> {
+        const deelnemersBySerie = this.groupDeelnemersBySerie(deelnemers)
+
         Object
-            .keys(theHash)
-            .forEach(key => {
-                const deelnemersForSerie = theHash[key]
-                const deelnemersMetObp = deelnemersForSerie.filter(deelnemer => deelnemer.obp !== '')
-
-                deelnemersMetObp.sort((deelnemerA, deelnemerB) => deelnemerA.obpSortable - deelnemerB.obpSortable)
-
-                const sortedDeelnemers = hoogsteGetalWint.indexOf(onderdeel) > -1 ?
-                    deelnemersMetObp.reverse() : deelnemersMetObp
+            .keys(deelnemersBySerie)
+            .forEach(serienummer => {
+                const deelnemersForSerie = deelnemersBySerie[serienummer]
+                const deelnemersMetObp = deelnemersForSerie.filter(deelnemer => deelnemer.obp !== undefined)
+                const sortedDeelnemers = this.orderDeelnemersByObp(onderdeel, deelnemersMetObp)
 
                 if (sortedDeelnemers[0]) {
                     sortedDeelnemers[0].besteInSerie = true
