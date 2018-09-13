@@ -37,7 +37,10 @@ class StartlijstParser {
     }
 
     parseStarttijd($: CheerioStatic): string {
-        return $('#primarycontent h3').eq(1).text().trim();
+        const starttijdRegex = /\d\d[:]\d\du - \d\d[:]\d\du/
+        const starttijdRaw = $('#primarycontent h3').eq(1).text().trim()
+        const findDate = starttijdRegex.exec(starttijdRaw)
+        return findDate ? findDate[0] : undefined
     }
 
     parseDeelnemers($: CheerioStatic): Array<DeelnemerModel> {
