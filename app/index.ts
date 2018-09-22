@@ -45,8 +45,9 @@ wedstrijdTijdsschemasService
                                 startlijstenVorigeWedstrijden
                             )
                         .then(overview => {
+                            const csvFilenameFriendlyTitle = filenamify(overview.titel, { replacement: '-' });
                             return microHulpje
-                                .writeAsCsv(overview, `./output/${wedstrijdFolderName}/${overview.titel}.csv`)
+                                .writeAsCsv(overview, `./output/${wedstrijdFolderName}/${csvFilenameFriendlyTitle}.csv`)
                                 .then(() => {
                                     debug(`Overzicht ${overview.titel} aangemaakt (${tijdsschema.startlijstLinks.length - queue.size}/${tijdsschema.startlijstLinks.length}) ✅`)
                                 })
