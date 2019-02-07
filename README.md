@@ -9,9 +9,21 @@ Bv: `cd Dropbox/AV\ Haarlem/Microfonist/micro-hulpje/`
 1. Voer onderstaande commando's één voor één uit (met enter voer je een commando uit)
 
 ```bash
-$ git clone https://github.com/Voles/micro-hulpje.git
-$ cd micro-hulpje
-$ npm install
+git clone https://github.com/Voles/micro-hulpje.git
+cd micro-hulpje
+npm install
+```
+
+## Updaten
+
+1. Open het programma Terminal
+1. Ga naar de map waar micro-hulpje is geïnstalleerd (gebruik hiervoor het `cd` commando)  
+Bv: `cd Dropbox/AV\ Haarlem/Microfonist/micro-hulpje/`
+1. Voer onderstaande commando's één voor één uit (met enter voer je een commando uit)
+
+```bash
+git pull
+npm install
 ```
 
 ## Uitvoeren
