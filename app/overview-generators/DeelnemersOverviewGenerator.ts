@@ -45,9 +45,10 @@ class DeelnemersOverviewGenerator {
                     return startlijst
                 }
 
-                return this
-                    .hydrateDeelnemersWithRanglijstInfo(startlijst.categorie, startlijst.onderdeel, RanglijstSeizoenen.Outdoor2018, startlijst.deelnemers)
-                    .then(() => startlijst)
+                // return this
+                //     .hydrateDeelnemersWithRanglijstInfo(startlijst.categorie, startlijst.onderdeel, RanglijstSeizoenen.Outdoor2018, startlijst.deelnemers)
+                //     .then(() => startlijst)
+                return startlijst
             })
             .then(startlijst => {
                 if (!startlijst.titel) {
