@@ -8,7 +8,9 @@ class CacheService {
     // TODO: investigate conventional way to implement Singleton pattern in TypeScript
     constructor() {
         CacheService._instance = this
-        this.store = storage.init({ ttl: 0 });
+        const second = 1000
+        const minute = 60 * second
+        this.store = storage.init({ ttl: 5 * minute });
     }
 
     static getInstance(): CacheService {
