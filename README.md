@@ -4,7 +4,8 @@ Micro Hulpje [![Build Status](https://travis-ci.org/Voles/micro-hulpje.svg?branc
 ## Installatie
 
 1. Open het programma Terminal
-1. Ga naar de gewenste map voor de installatie (gebruik hiervoor het `cd` commando)
+1. Ga naar de gewenste map voor de installatie (gebruik hiervoor het `cd` commando)  
+Bv: `cd /mijn-map`
 1. Voer onderstaande commando's één voor één uit (met enter voer je een commando uit)
 
 ```bash
