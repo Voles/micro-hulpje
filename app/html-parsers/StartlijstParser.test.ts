@@ -4,6 +4,7 @@ import startlijstParserHtmlMetLangeNaam from './StartlijstParserHtmlMetLangeNaam
 import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerieIndeling';
 import startlijstParserHtmlMetTeams from './StartlijstParserHtmlMetTeams';
 import startlijstParserHtmlZonderStartnummers from './StartlijstParserHtmlZonderStartnummers';
+import startlijstParserHtmlMetMeerdereTijden from './StartlijstParserHtmlMetMeerdereTijden';
 import DeelnemerModel from "../models/DeelnemerModel";
 
 describe('Startlijst HTML parser', () => {
@@ -177,6 +178,20 @@ describe('Startlijst HTML parser', () => {
                 datum: '07-07-2018',
                 startnummer: undefined
             }))
+        })
+    })
+
+    describe('parsing a Startlijst met meerdere starttijden', () => {
+        beforeAll(() =>
+            startlijstParser
+                .parse(startlijstParserHtmlMetMeerdereTijden)
+                .then(result => {
+                    parsedResult = result
+                })
+        )
+
+        it('should take the actual starttijd', () => {
+            expect(parsedResult.starttijd).toEqual('12:30u - 14:05u');
         })
     })
 })
