@@ -16,6 +16,7 @@ class WedstrijdTijdsschemaParser {
         return $('#topmenuHolder li').first().find('a').first().text().trim()
     }
 
+    // we are actually getting any link available (also for uitslagen or when the serie indeling is not yet known)
     parseStartlijstLinks($: CheerioStatic): Array<string> {
         const onderdelen = $('table.chronoloogtabel tbody').find('tr')
 
@@ -24,7 +25,7 @@ class WedstrijdTijdsschemaParser {
         onderdelen
             .each((i, element) => {
                 const startlijstCell = $(element).find('td').eq(3)
-                const startlijstKnop = $(startlijstCell).find('.btn-warning').first()
+                const startlijstKnop = $(startlijstCell).find('.btn').first()
                 const startlijstLink = $(startlijstKnop).attr('href')
 
                 if (startlijstLink) {

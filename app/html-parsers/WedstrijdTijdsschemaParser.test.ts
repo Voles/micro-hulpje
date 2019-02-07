@@ -103,9 +103,9 @@ describe('Wedstrijd HTML parser', () => {
         })
 
         describe('startlijst links', () => {
-            it('should be empty', () => {
+            it('should be parsed', () => {
                 expect(parsedResult).toHaveProperty('startlijstLinks')
-                expect(parsedResult.startlijstLinks).toEqual([])
+                expect(parsedResult.startlijstLinks.length).toEqual(71)
             })
         })
 
