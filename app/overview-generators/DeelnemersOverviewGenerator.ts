@@ -52,7 +52,7 @@ class DeelnemersOverviewGenerator {
             })
             .then(startlijst => {
                 if (!startlijst.titel) {
-                    console.info(`OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
+                    console.info(`Medal for best OBP ophalen via de Atleet-pagina ophalen is niet gelukt voor ${startlijst.titel}. Kan onderdeel niet detecteren uit de titel.`)
                     return startlijst
                 }
 
