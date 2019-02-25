@@ -30,6 +30,7 @@ enum Onderdeel {
     Lopen1000MSteeple = '1000 meter steeple',
     Lopen1500M = '1500 meter',
     Lopen1500MSteeple = '1500 meter steeple',
+    Lopen3000M = '3000 meter',
 
     Discuswerpen1Kg = 'Discuswerpen 1 kilogram',
     Discuswerpen075Kg = 'Discuswerpen 0,75 kilogram',
@@ -39,7 +40,10 @@ enum Onderdeel {
     Horden80MHoogte76Cm = '80 meter horden (76cm)',
     Horden100M = '100 meter horden',
     Horden100MHoogte84Cm = '100 meter horden (84cm)',
-    Horden300MHoogte76Cm = '300 meter horden (76cm)'
+    Horden300MHoogte76Cm = '300 meter horden (76cm)',
+
+    Polsstokhoogspringen = 'Polsstokhoogspringen',
+    HinkStapSpringen = 'Hink-stap-springen',
 }
 
 export const hoogsteGetalWint: Array<Onderdeel> = [

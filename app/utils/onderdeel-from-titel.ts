@@ -40,9 +40,13 @@ export default function detectOnderdeelFromStartlijstTitel(titel: string) : Onde
         Onderdeel.Lopen1000MSteeple,
         Onderdeel.Lopen1500M,
         Onderdeel.Lopen1500MSteeple,
+        Onderdeel.Lopen3000M,
 
         Onderdeel.Discuswerpen1Kg,
-        Onderdeel.Discuswerpen075Kg
+        Onderdeel.Discuswerpen075Kg,
+
+        Onderdeel.Polsstokhoogspringen,
+        Onderdeel.HinkStapSpringen
     ]
 
     return onderdelen.find(onderdeel => titel.includes(onderdeel))
