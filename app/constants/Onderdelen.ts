@@ -61,7 +61,8 @@ export const hoogsteGetalWint: Array<Onderdeel> = [
     Onderdeel.Kogelslingeren3Kg,
     Onderdeel.Kogelslingeren4Kg,
     Onderdeel.Discuswerpen1Kg,
-    Onderdeel.Discuswerpen075Kg
+    Onderdeel.Discuswerpen075Kg,
+    Onderdeel.Polsstokhoogspringen
 ]
 
 export default Onderdeel;
