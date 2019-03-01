@@ -61,6 +61,7 @@ class StartlijstParser {
         let verenigingIndex;
         let teamIndex;
         let startnummerIndex;
+        let statusIndex;
 
         const headers = tabel.find('thead th, thead td');
 
@@ -90,6 +91,10 @@ class StartlijstParser {
             if (content === 'Snr') {
                 startnummerIndex = i;
             }
+
+            if (content === 'Status') {
+                statusIndex = i;
+            }
         });
 
         const theDeelnemers = [];
@@ -114,6 +119,12 @@ class StartlijstParser {
                 const datumRegex = /(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}/;
                 const findDate = datumRegex.exec(tipped);
                 const datum = findDate ? findDate[0] : undefined;
+                let isAfgemeld = false;
+
+                if (statusIndex) {
+                    const statusElement = $(element).find('td').eq(statusIndex);
+                    isAfgemeld = statusElement.text().trim() === 'Afgemeld';
+                }
 
                 const deelnemer = new DeelnemerModel({
                     serie: serie,
@@ -136,8 +147,9 @@ class StartlijstParser {
                     deelnemer.startnummer = startnummer
                 }
 
-                theDeelnemers
-                    .push(deelnemer);
+                if (!isAfgemeld) {
+                    theDeelnemers.push(deelnemer);
+                }
             });
 
         return sortBy(theDeelnemers, ['serie', 'volgorde'])

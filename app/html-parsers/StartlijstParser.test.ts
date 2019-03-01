@@ -5,6 +5,7 @@ import startlijstParserHtmlMetSerieIndeling from './StartlijstParserHtmlMetSerie
 import startlijstParserHtmlMetTeams from './StartlijstParserHtmlMetTeams';
 import startlijstParserHtmlZonderStartnummers from './StartlijstParserHtmlZonderStartnummers';
 import startlijstParserHtmlMetMeerdereTijden from './StartlijstParserHtmlMetMeerdereTijden';
+import startlijstParserHtmlMetAfgemeldeDeelnemers from './StartlijstParserHtmlMetAfgemeldeDeelnemers';
 import DeelnemerModel from "../models/DeelnemerModel";
 
 describe('Startlijst HTML parser', () => {
@@ -192,6 +193,20 @@ describe('Startlijst HTML parser', () => {
 
         it('should take the actual starttijd', () => {
             expect(parsedResult.starttijd).toEqual('12:30u - 14:05u');
+        })
+    })
+
+    describe('parsing a Startlijst met afgemelde deelnemers', () => {
+        beforeAll(() =>
+            startlijstParser
+                .parse(startlijstParserHtmlMetAfgemeldeDeelnemers)
+                .then(result => {
+                    parsedResult = result
+                })
+        )
+
+        it('should not include the afgemelde deelnemers in the deelnemers list', () => {
+            expect(parsedResult.deelnemers.length).toEqual(14);
         })
     })
 })
