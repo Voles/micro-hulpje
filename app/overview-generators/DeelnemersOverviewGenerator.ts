@@ -14,7 +14,7 @@ class DeelnemersOverviewGenerator {
     private ranglijstService: RanglijstService = new RanglijstService()
     private atleetService: AtleetService = new AtleetService()
 
-    private generateHydratedStartlijstFromUrl(startlijstUrl: string): Promise<StartlijstModel> {
+    private generateHydratedStartlijstFromUrl(startlijstUrl: string, seizoen: RanglijstSeizoenen): Promise<StartlijstModel> {
         return this
             .startlijstService
             .fromUrl(startlijstUrl)
@@ -45,10 +45,9 @@ class DeelnemersOverviewGenerator {
                     return startlijst
                 }
 
-                // return this
-                //     .hydrateDeelnemersWithRanglijstInfo(startlijst.categorie, startlijst.onderdeel, RanglijstSeizoenen.Outdoor2018, startlijst.deelnemers)
-                //     .then(() => startlijst)
-                return startlijst
+                return this
+                    .hydrateDeelnemersWithRanglijstInfo(startlijst.categorie, startlijst.onderdeel, seizoen, startlijst.deelnemers)
+                    .then(() => startlijst)
             })
             .then(startlijst => {
                 if (!startlijst.titel) {
@@ -62,9 +61,9 @@ class DeelnemersOverviewGenerator {
             })
     }
 
-    generateWithComparison(startlijstUrl: string, uitslagenVorigeWedstrijdOnderdelen: Array<StartlijstModel>): Promise<DeelnemersOverviewModel> {
+    generateWithComparison(startlijstUrl: string, uitslagenVorigeWedstrijdOnderdelen: Array<StartlijstModel>, seizoen: RanglijstSeizoenen): Promise<DeelnemersOverviewModel> {
         return this
-            .generateHydratedStartlijstFromUrl(startlijstUrl)
+            .generateHydratedStartlijstFromUrl(startlijstUrl, seizoen)
             .then(startlijst => {
                 const startlijstVorigeWedstrijdVoorZelfdeOnderdeel =
                     uitslagenVorigeWedstrijdOnderdelen
@@ -104,7 +103,7 @@ class DeelnemersOverviewGenerator {
             })
     }
 
-    private hydrateDeelnemersWithRanglijstInfo(categorie: string, onderdeel: string, seizoen: string, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
+    private hydrateDeelnemersWithRanglijstInfo(categorie: string, onderdeel: Onderdeel, seizoen: string, deelnemers: Array<DeelnemerModel>): Promise<Array<DeelnemerModel>> {
         return this
             .ranglijstService
             .from(seizoen, categorie, onderdeel)

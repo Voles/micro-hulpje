@@ -3,9 +3,10 @@ import FileWriter from "./writers/FileWriter"
 import WedstrijdTijdsschemasService from "./services/WedstrijdTijdsschemasService"
 
 import debugLogs from 'debug'
-import filenamify from'filenamify'
+import filenamify from 'filenamify'
 import PQueue from 'p-queue'
 import mkdirpPromise from 'mkdirp-promise'
+import RanglijstSeizoenen from "./constants/RanglijstSeizoenen";
 
 const fileWriter = new FileWriter()
 const microHulpje = new MicroHulpje(fileWriter)
@@ -21,10 +22,16 @@ debug('Start 🎬')
  * Code om alle startlijsten voor een wedstrijd te genereren
  */
 
-// Finale Pupillencompetitie regio 1-3-4
-const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/24937/'
+// VMI NSK Indoor 2019
+const linkTijdsschema = 'https://www.atletiek.nu/wedstrijd/chronoloog/25155/'
 
-const linksVergelijkingsWedstrijden = []
+const seizoen = RanglijstSeizoenen.Indoor20182019
+
+const linksVergelijkingsWedstrijden = [
+    // 'https://www.atletiek.nu/wedstrijd/chronoloog/16607/',
+    // 'https://www.atletiek.nu/wedstrijd/chronoloog/16832/',
+]
+
 
 wedstrijdTijdsschemasService
     .fromUrl(linkTijdsschema)
@@ -42,7 +49,8 @@ wedstrijdTijdsschemasService
                         return microHulpje
                             .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
                                 link,
-                                startlijstenVorigeWedstrijden
+                                startlijstenVorigeWedstrijden,
+                                seizoen
                             )
                         .then(overview => {
                             const csvFilenameFriendlyTitle = filenamify(overview.titel, { replacement: '-' });
@@ -68,12 +76,13 @@ wedstrijdTijdsschemasService
     })
 
 
-// /**
-//  * Code om een enkele startlijst te genereren
-//  */
-//
-// // JJC - 100 meter horden (84cm)
-// const linkStartlijst = 'https://www.atletiek.nu/wedstrijd/startlijst/208353/41/'
+/**
+ * Code om een enkele startlijst te genereren
+ */
+
+// const linkStartlijst = 'https://www.atletiek.nu/wedstrijd/startlijst/222662/52/'
+// const seizoen = RanglijstSeizoenen.Indoor20182019
+// const linksVergelijkingsWedstrijden = []
 //
 // mkdirpPromise(`./output/enkele-startlijsten`)
 //     .then(() => microHulpje.getStartlijstenVoorWedstrijdUrls(linksVergelijkingsWedstrijden))
@@ -81,7 +90,8 @@ wedstrijdTijdsschemasService
 //         return microHulpje
 //             .deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(
 //                 linkStartlijst,
-//                 startlijstenVorigeWedstrijden
+//                 startlijstenVorigeWedstrijden,
+//                 seizoen
 //             )
 //     })
 //     .then(overview => microHulpje.writeAsCsv(overview, `./output/enkele-startlijsten/${overview.titel}.csv`))

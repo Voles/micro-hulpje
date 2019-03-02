@@ -5,6 +5,7 @@ import IOverviewModel from "../models/overviews/IOverviewModel";
 import WedstrijdTijdsschemasService from "../services/WedstrijdTijdsschemasService";
 import StartlijstService from "../services/StartlijstService";
 import StartlijstModel from "../models/StartlijstModel";
+import RanglijstSeizoenen from "../constants/RanglijstSeizoenen";
 
 class MicroHulpje {
     private deelnemersOverviewGenerator: DeelnemersOverviewGenerator = new DeelnemersOverviewGenerator()
@@ -42,10 +43,10 @@ class MicroHulpje {
             })
     }
 
-    deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(url: string, startlijstenVorigeWedstrijden: Array<StartlijstModel>): Promise<DeelnemersOverviewModel> {
+    deelnemersOverviewVoorStartlijstMetVergelijkingVorigeWedstrijden(url: string, startlijstenVorigeWedstrijden: Array<StartlijstModel>, seizoen: RanglijstSeizoenen): Promise<DeelnemersOverviewModel> {
         return this
             .deelnemersOverviewGenerator
-            .generateWithComparison(url, startlijstenVorigeWedstrijden)
+            .generateWithComparison(url, startlijstenVorigeWedstrijden, seizoen)
     }
 
     writeAsCsv(overview: IOverviewModel, path: string): Promise<void> {

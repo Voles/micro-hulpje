@@ -49,7 +49,7 @@ class StartlijstModel {
             return RanglijstCategorien.VrouwenJuniorenC
         } else if (titel.includes('MJD')) {
             return RanglijstCategorien.VrouwenJuniorenD
-        } else if (titel.includes('Vsen')) {
+        } else if (titel.includes('Vsen') || titel.includes('Vrouwen')) {
             return RanglijstCategorien.VrouwenSenioren
         } else {
             return null
